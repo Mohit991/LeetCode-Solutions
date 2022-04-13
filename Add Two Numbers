@@ -1,0 +1,56 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        int digits1 = 0;
+        ListNode l11 = l1;
+        for(int i=0; l11.next != null; i++){
+            digits1++;
+            l11 = l11.next;
+        }
+        
+        ListNode l22 = l2;
+        int digits2 = 0;
+        for(int i=0; l22.next != null; i++){
+            l22 = l22.next;
+            digits2++;
+        }
+        ListNode lfirst = l1;
+        ListNode lsecond = l2;
+        int firstNumber =0;
+        int secondNumber =0;
+        for(int i=digits1-1; i<=0; i--){
+            firstNumber = firstNumber + (lfirst.val * (int)(Math.pow(10,i)));
+            lfirst = lfirst.next;
+        }
+        for(int j=digits2-1; j<=0; j--){
+            secondNumber = secondNumber + (lsecond.val * (int)(Math.pow(10,j)));
+            lsecond = lsecond.next;
+        }
+        int finalNumber = firstNumber + secondNumber;
+        int f = finalNumber;
+        ListNode Lfinal = new ListNode();
+        int digitsFinal = 0;
+        while(f>0){
+            digitsFinal++;
+            f = f/10;
+        }
+        ListNode Lfinal1 = Lfinal;
+        int f1 = finalNumber;
+        for(int i=digitsFinal-1;i>=0;i--){
+            Lfinal.val = f1 / (int)(Math.pow(10,i));
+            Lfinal = Lfinal.next;
+            f1 = f1%(int)(Math.pow(10,i));
+        }
+        
+        return Lfinal1;
+    }
+}
