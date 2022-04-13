@@ -1,0 +1,39 @@
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+ 
+ //JS Code
+ 
+ 
+var twoSum = function(nums, target) {
+       let count = []
+       let flag = 0
+    for(let i=0;i<nums.length;i++){
+      let sum = nums[i]
+      let value = target - sum
+      for(let j=i+1;j<nums.length;j++){
+       
+          // sum = sum + nums[j]
+          // if(sum == target ){
+          //    count[0] = j
+          //     count[1] = i
+          //     flag = 1
+          //     break;
+          // }
+          // sum = nums[i]
+          
+          if(nums[j] == value){
+               count[0] = j
+              count[1] = i
+              flag = 1
+              break;
+          }
+      }
+      if(flag == 1){
+          break;
+      }
+  }
+    return count
+};
