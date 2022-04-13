@@ -1,0 +1,28 @@
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+var findDisappearedNumbers = function(nums) {
+    // var count = new Array(nums.length);
+    // count.forEach((index,value) => {
+    //     count[index] = 0
+    // })
+    // nums.forEach((index,value) => {
+    //     let x = nums[index];
+    //     x = x - 1;
+    //     nums[x] = nums[x] + 1  ;
+    // })
+    let n = 1;
+    let count = 0;
+//     nums.forEach((index,value) => {
+       
+//         nums[Math.abs(value)] = -1 * nums[Math.abs(value)]
+        
+//     })
+    for(let i=0; i<nums.length;i++){
+        if(nums[nums[i]]>0){
+        nums[Math.abs(nums[i]-1)] = -1 * nums[Math.abs(nums[i]-1)]
+        }
+    }
+    return nums
+};
