@@ -1,0 +1,37 @@
+class Solution {
+    public int maxSatisfied(int[] customers, int[] grumpy, int minutes) {
+        int[] mul = new int[customers.length];
+        for(int i=0; i<mul.length; i++){
+            mul[i] = customers[i] * grumpy[i];
+        }
+        int sum = 0;
+        int allMax = 0; 
+        int index = 0;
+        for(int i=0; i<mul.length; i++){
+            sum = 0;
+            int m = 0;
+            for(int j=i; m < minutes && j < mul.length; j++){
+                sum = sum + mul[j]; 
+                m++;
+            }
+            if(sum > allMax){
+                index  = i; 
+                allMax = sum;
+            }
+        }
+        
+        int finalSum = 0;
+        for(int i=0; i<customers.length; i++){
+            if(i>=index && i<index+minutes)
+            {
+                finalSum = finalSum + customers[i];
+                continue;
+            }
+            if(grumpy[i] == 0){
+                finalSum = finalSum + customers[i];
+            }
+        }
+        return finalSum;
+    }
+    
+}
