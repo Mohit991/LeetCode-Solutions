@@ -1,0 +1,25 @@
+public class Solution {
+            public ListNode detectCycle(ListNode head) {
+                //Initiate two pointers one is fast moving ( a step ahead ) and a slow pointer . IF there is cycle in the linked list the two pointers will meet for sure . Initialize fast and slow at head
+                ListNode fast = head;
+                ListNode slow = head;
+                while(fast != null && fast.next != null){//condition to check if listnode is not null
+                    fast = fast.next.next;//one step ahead of slow node 
+                    slow = slow.next;//one step behind fast node
+                    //if there is a cycle the fast and slow nodes will meet at some point 
+                    // so once they meet 
+                    if(fast == slow){
+                        // we now have to find the node where the cycle starts so same like above we initiaste a pointer which starts at head node and slow pointer remians where it . The newly created pointer and slow pointer will meet where the cycle starts
+                        ListNode newSlow = head;
+                        while(newSlow != slow)//if both are equal then we can return it means we have fu=ound
+                        {
+                            slow = slow.next;
+                            newSlow = newSlow.next;
+                            
+                    }
+                        return slow;
+                }
+            }
+                return null;
+            }
+        }
