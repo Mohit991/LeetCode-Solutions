@@ -1,0 +1,59 @@
+class Solution {
+    public int maxProfit(int[] prices) {
+        
+        int diff = 0;
+        int min = prices[0];
+        for(int i = 1; i<prices.length; i++){
+            int a = prices[i] - min;
+            if(a>diff) diff = a;
+            if(min > prices[i]) min = prices[i];
+        }
+        return diff;
+        
+        
+        // int i = 0;
+        // int j = prices.length - 1; 
+        // int diff = 0;
+        // int cdiff = 0;
+        // int idiff = 0;
+        // int jdiff = 0;
+        // while(i < j){
+        //     cdiff = prices[j] - prices[i];
+        //     if(cdiff > diff){
+        //         diff = cdiff;
+        //     }
+        //     idiff = prices[i] - prices[i+1];
+        //     jdiff = prices[j-1] - prices[j];
+        //     if(idiff < jdiff) j--;
+        //     else i++;
+        // }
+        // return diff;
+        
+        
+        
+//         int j = prices.length - 1;
+//         int  i = 0;
+//         int diff = 0;
+//         while(i < j){
+//             int cdiff = prices[j] - prices[i];
+//             if(diff < cdiff){
+//                 diff = cdiff;
+//             }
+//             if(prices[j] > prices[i]) j--;
+//             else i++;
+//         }
+        
+//          j = prices.length - 1;
+//           i = 0;
+//         while(i < j){
+//             int cdiff = prices[j] - prices[i];
+//             if(diff < cdiff){
+//                 diff = cdiff;
+//             }
+//             if(prices[j] > prices[i]) i++;
+//             else j--;
+//         }
+        
+//         return diff;
+    }
+}
