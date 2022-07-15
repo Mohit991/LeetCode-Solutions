@@ -1,0 +1,28 @@
+class Solution {
+    public int largestRectangleArea(int[] heights) {
+        int ahead = 0;
+        int before = 0; 
+        int width = 0;
+        int maxArea = 0;
+        int area = 0;
+        for(int i=0; i<heights.length; i++){
+            ahead = 0;
+            before = 0; 
+            for(int j=i-1; j>=0; j--){
+                if(heights[j]>=heights[i]) before++;
+                else break;
+            }
+            for(int k=i+1; k<heights.length; k++){
+                if(heights[k]>=heights[i]) ahead++;
+                else break;
+            }
+            width = ahead + before + 1;
+            area = heights[i] * width;
+            if(maxArea<area){
+                maxArea = area;
+            }
+            
+        }
+        return maxArea;
+    }
+}
