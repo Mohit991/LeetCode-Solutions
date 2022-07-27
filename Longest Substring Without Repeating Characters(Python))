@@ -1,0 +1,17 @@
+class Solution(object):
+    def lengthOfLongestSubstring(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        i = 0
+        j = 0
+        max = 0
+        map = {}
+        for i in range(0, len(s)):
+            if s[i] in map:
+                j = map[s[i]] + 1 if map[s[i]] + 1>j else j
+            map[s[i]] = i
+            max = max if max>(i-j+1) else (i-j+1)
+        return max  
+        
