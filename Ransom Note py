@@ -1,0 +1,14 @@
+class Solution:
+    def canConstruct(self, ransomNote: str, magazine: str) -> bool:
+        map = {}
+        for i in range(len(magazine)):
+            if magazine[i] in map:
+                map[magazine[i]] += 1
+            else: map[magazine[i]] = 1
+            
+        for i in range(len(ransomNote)):
+            if ransomNote[i] in map:
+                if map[ransomNote[i]] == 0: return False
+                else: map[ransomNote[i]] -= 1
+            else: return False  
+        return True  
