@@ -1,0 +1,28 @@
+#-------------Recursion with DP-------------------------
+class Solution:
+    l = [0,1,2]
+    def climbStairs(self, n: int) -> int:
+        if n < len(self.l):
+            return self.l[n]
+        if n == 1: 
+            return 1
+        if n == 2:
+            return 2
+        self.l.append(self.climbStairs(n-1) + self.climbStairs(n-2))
+        return self.l[n]
+        
+        
+ #-------------Simple DP-------------------------
+ 
+class Solution:
+    def climbStairs(self, n: int) -> int:
+        if n == 1: return 1
+        if n == 2: return 2
+        l = [None]*(n+1)
+        l[0] = 0
+        l[1] = 1
+        l[2] = 2
+        for i in range(3,len(l)):
+            l[i] = l[i-1] + l[i-2]
+        return l[n]   
+        
