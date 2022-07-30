@@ -1,0 +1,19 @@
+class Solution:
+    def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
+        x = newInterval[0]
+        y = newInterval[1]
+        left = []
+        right = []
+        for i in range(len(intervals)):
+            if x>intervals[i][0] and x>intervals[i][1]:
+                left.append(intervals[i])
+                
+        for i in range(len(intervals)):
+            if y<intervals[i][0] and y<intervals[i][1]:
+                right.append(intervals[i]) 
+              
+        if left+right!=intervals:
+            x = min(x,intervals[len(left)][0])
+            y = max(y,intervals[len(intervals) - len(right)-1][1])
+            
+        return left+[[x,y]]+right
