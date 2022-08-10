@@ -1,0 +1,22 @@
+class Solution:
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
+        pre, post = [], []
+        p, q = 1, 1
+        pre.append(1)
+        for i in range(1,len(nums)):
+            p  = p*nums[i-1]
+            pre.append(p)
+        post.append(1)    
+        for j in range(len(nums)-2, -1, -1):
+            q  = q*nums[j+1]
+            post.append(q)    
+            
+        print(pre)
+        print(post)
+        res = []
+        k = len(post) - 1
+        for i in range(len(nums)):
+            res.append(post[k]*pre[i])
+            k -= 1
+         
+        return res
