@@ -1,0 +1,30 @@
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        # res = []
+        # def helper(target, path):
+        #     if target == 0:
+        #         res.append(path)
+        #         return 
+        #     if target < 0:
+        #         return 
+        #     for i in candidates:
+        #          helper(target - i, path+[i])
+        #     return     
+        # helper(target, [])
+        # return res      
+    #above code is correct code but the only problem is that this code allows duplicates so the answer is not 
+    #correct because answer does not need duplicates. 
+        
+        res = []
+        def dfs(nums, target, path):
+            if target < 0:
+                return 
+            if target == 0:
+                res.append(path)
+                return 
+            for i in range(len(nums)):
+                dfs(nums[i:], target-nums[i], path+[nums[i]])
+                #here we dont get duplicates because once we have moved forward in the loop we will not take 
+                #previous valus in the candidates array and hence we do not get duplicate. 
+        dfs(candidates, target, [])
+        return res        
