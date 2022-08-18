@@ -1,0 +1,18 @@
+class Solution(object):
+    res = None
+    def lowestCommonAncestor(self, root, p, q):
+        def traverse(current):
+            if current is None:
+                return False
+            
+            left_res = traverse(current.left)
+            right_res = traverse(current.right)
+
+            if (left_res and right_res) or (current in [p,q] and (left_res or right_res)) :
+                self.result = current
+            
+            if current in [p,q] or left_res or right_res:
+                return True 
+            
+        traverse(root)
+        return self.result
