@@ -1,0 +1,60 @@
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        
+        def dfs(st):
+            if st == s:
+                return True
+            if len(st) > len(s):
+                return False
+            
+            for i in wordDict:
+                # print(st)
+                if dfs(st+i): return True
+                
+            return False    
+                
+        return dfs("")   
+        
+        #above code runs and passes 32 test cases. After that time limit is exceeded. 
+        
+        ##########################################################################
+        
+        
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        
+        def dfs(s):
+            if s == "":
+                return True            
+            for i in wordDict:
+                # print(st)
+                if s.startswith(i):
+                    if dfs(s[len(i):]): return True
+                
+            return False    
+                
+        return dfs(s)                
+        
+        
+       #above code runs fine and passes 35 test cases but after that time limit exceeds. 
+       #################################################################################
+       
+       
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        memo = {}
+        def dfs(s):
+            if s == "":
+                return True 
+            if s in memo:
+                return memo[s]
+            for word in wordDict:
+                if s.startswith(word):
+                    if dfs(s[len(word):]):
+                        memo[s] = True
+                        return True
+            memo[s] = False    
+            return False    
+                
+        return dfs(s)         
+        #Above code uses DP and runs all the test cases. 
