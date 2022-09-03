@@ -1,0 +1,52 @@
+#This is backtracking or recursion approch but it takes too much time
+class Solution:
+    def change(self, amount: int, coins: List[int]) -> int:
+        def dfs(coins, amount, currentAmount):
+            #If currentAmount becomes equal to amount that is you found one possible way. 
+            #So return 1
+            if currentAmount == amount:
+                return 1
+            
+            #If currentAmount becomes greater than amount then it is not possible. 
+            #So return 0, you could not find the way
+            if currentAmount > amount:
+                return 0
+            
+            #This count will tell number of ways possible till now
+            count = 0
+            for i in range(len(coins)):
+                #Call dfs with array ahead of the current value and increase current amount
+                #with the current coint value
+                #Store this in count
+                count += dfs(coins[i:], amount, currentAmount+coins[i])
+            
+            #Return total count possible 
+            return count
+        
+        return dfs(coins, amount, 0)
+    
+##########################################################################################
+
+This is DP approch using bottom up approch
+class Solution:
+    def change(self, amount: int, coins: List[int]) -> int:
+        #Ways array will track the number of possible ways to construct the amount
+        #Index of this array is the amount
+        #eg ways[0] means number of possible ways to make amount = 0 which is 1 always
+        # ways[1] means number of possible ways to make amount = 1 
+        # ways[2] means number of possible ways to make amount = 2 
+        ways = [1] + [0]*amount
+        
+        #We will pick every coin
+        for coin in coins:
+            #We will range from coint value to the amount
+            for currentAmount in range(coin, amount+1):
+                #At every point we will updates the current amount
+                #This value is the sum of possible ways of making the currentAmount
+                #Plus the number of ways of making the currentAmount - coin
+                #bc you can just add the current coin value in ways[currentAmount - coin]
+                #and get the current value bc currentAmount - coin + coin = currentAmount
+                ways[currentAmount] += ways[currentAmount - coin]
+                
+        #Finally return the ways found for amount    
+        return ways[amount]      
