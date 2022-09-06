@@ -1,0 +1,19 @@
+class Solution:
+    def removeDuplicates(self, nums: List[int]) -> int:
+        #we will use two pointers i and j 
+        #i will run ahead of j  
+        i, j = 1, 0
+        
+        #If ith element is not the same as jth element then we increment j and copy ith
+        #element to jth index.
+        
+        for i in range(len(nums)):
+            if nums[i] != nums[j]:
+                j += 1
+                nums[j] = nums[i]
+        
+        #return j+1 because those are the unique elements.
+        return j+1
+                
+                
+                
