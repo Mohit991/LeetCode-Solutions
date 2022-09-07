@@ -1,0 +1,35 @@
+class Solution:
+    def search(self, nums: List[int], target: int) -> bool:
+        def binarySearch(left, right, target):
+            
+            
+            
+            mid = (left + right)//2 
+            if nums[mid] == target: return True
+            
+            if left > right:
+                return False
+            
+            if nums[left] < nums[mid]:
+                if nums[left] <= target < nums[mid]:
+                    return binarySearch(left, mid-1, target)
+                else:
+                    return binarySearch(mid+1, right, target)
+                    
+            elif nums[mid] < nums[left]:
+                if nums[mid] < target <= nums[right]:
+                    return binarySearch(mid+1, right, target)
+                
+                else:
+                    return binarySearch(left, mid-1, target)
+                
+            elif nums[mid] == nums[left]:
+                if nums[mid] != nums[right]:
+                    return binarySearch(mid+1, right, target)
+                
+                else:
+                    res = binarySearch(left, mid-1, target)
+                    if res: return res
+                    return binarySearch(mid+1, right, target)      
+
+        
