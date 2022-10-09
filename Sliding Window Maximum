@@ -1,0 +1,110 @@
+#Brute Force Solution:
+#For every window of size k, apply another loop and find out the max number.
+#TC - O(NK), N = Size of array
+#SC - O(1)
+
+# class Solution:
+#     def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+#         maxNum = -inf
+#         maxWin = []
+#         maxIndex = 0
+#         start, end = 0, 0 
+        
+#         for end in range(k):
+#             if maxNum < nums[end]:
+#                 maxNum = nums[end]
+#                 maxIndex = end
+        
+#         print(maxIndex)
+#         maxWin.append(maxNum)
+        
+#         while end < len(nums)-1:
+#             start += 1
+#             end += 1
+#             if maxIndex < start:
+#                 maxNum = -inf
+#                 for i in range(start, end+1):
+#                     if maxNum < nums[i]:
+#                         maxNum = nums[i]
+#                         maxIndex = i
+#             else:
+#                 if maxNum < nums[end]:
+#                     maxNum = nums[end]
+#                     maxIndex = end
+                
+#             maxWin.append(maxNum)
+            
+            
+#         return maxWin    
+    
+########################################################################      
+
+#Optimized Solution:
+#we create a max heap and push first k elements along with indexes to the max heap. Now take the first element
+#from heap and add it to result. Now Move the window towards the right and add end element to max heap. Now 
+#pop from max heap as long as the index of the top element in heap is in the range start to end. When that 
+#happens, add that element to result. 
+#TC - O(N log k)
+#SC - O(N)
+
+# class Solution:
+#     def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:   
+#         maxNum = -inf
+#         maxWin = []
+#         start, end = 0, 0
+#         heap = []
+        
+#         for end in range(k):
+#             heappush(heap, (-nums[end], end))
+        
+#         maxNum = -heap[0][0]
+#         maxWin.append(maxNum)  
+        
+#         while end < len(nums)-1:
+
+#             end += 1
+#             start += 1
+#             heappush(heap, (-nums[end], end))
+                
+#             while heap[0][1] < start:
+#                 heappop(heap)
+                
+#             maxNum = -heap[0][0]
+#             maxWin.append(maxNum)
+            
+#         return maxWin
+    
+########################################################################      
+
+# Here we introduce an interesting data structure. It's a deque with an interesting property -
+# the elements in the deque from head to tail are in decreasing order (hence the name monotonic).
+# To achieve this property, we modify the push operation so that
+# Before we push an element into the deque, we first pop everything smaller than it out of the deque
+# The time complexity is O(N). This is because each element in the original array can only be pushed into and popped out of the deque only once.
+# The key why monotonic deque works is it stores both magnitude and position information. From head to tail, the elements get smaller and further to the right of the array.
+# In the actual implementation, we store indices instead of actual elements in the deque. 
+# This is because we need the index to know if an element is out of the window or not 
+# and we can always get the value using the index from the array.
+
+# See Explanation:
+# https://leetcode.com/problems/sliding-window-maximum/discuss/871317/Clear-thinking-process-with-PICTURE-      brute-force-to-mono-deque-pythonjavajavascript
+
+class Solution:
+    def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:      
+        from collections import deque
+        q = deque() #Will store indices
+        res = []
+        for i in range(len(nums)):
+            while q and nums[q[-1]] <= nums[i]:
+                q.pop()
+                
+            q.append(i)
+            
+            if q[0] == i - k:  #remove first element if it's outside the window
+                q.popleft()
+            
+            # if window has k elements add to results (first k-1 windows have < k elements 
+            # because we start from empty window and add 1 element each iteration)
+            if i >= k - 1:
+                res.append(nums[q[0]])
+        return res        
