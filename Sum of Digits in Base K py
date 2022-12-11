@@ -1,0 +1,9 @@
+class Solution:
+    def sumBase(self, n: int, k: int) -> int:
+        ar = []
+        while n > 0:
+            div = n%k
+            n = int(n/k)
+            ar.append(div)
+        
+        return sum(ar) 
