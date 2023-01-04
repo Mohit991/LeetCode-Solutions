@@ -1,6 +1,6 @@
 class Solution:
     def coinChange(self, coins: List[int], amount: int) -> int:
-        #DP bottom up approch
+        #DP bottom up approch 
         dp = [amount+1]*(amount+1)
         dp[0] = 0
         
