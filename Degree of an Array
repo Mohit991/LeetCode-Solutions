@@ -1,0 +1,88 @@
+First we will find three things:
+1. freq of each element
+2. Maximun frequency
+3. First occurance of each element. 
+
+Then we will start from the back end of the array. When we see an element we will check if it is the most freq element or not.
+**``freqMap[nums[i]] == maxFreq``**
+
+If yes then we will take the current index and subtract the
+first occurance of this element plus 1(because of 0-indexing). 
+If this is less than the already found contiguousSubarray the we save it.
+**``contiguousSubarray = min(contiguousSubarray, i-firstOccurance[nums[i]]+1)``**
+We will also decrease its freq by 1, so that when we encounter it again,
+**``freqMap[nums[i]] == maxFreq``** is not satisfied.
+
+
+See the code below:
+```
+class Solution:
+    def findShortestSubArray(self, nums: List[int]) -> int:
+        firstOccurance = {}
+        freqMap = {}
+        maxFreq = -inf
+        for i in range(len(nums)):
+            if nums[i] not in firstOccurance:
+                firstOccurance[nums[i]] = i
+                
+            if nums[i] in freqMap:
+                freqMap[nums[i]] += 1
+            else:
+                freqMap[nums[i]] = 1
+            maxFreq = max(maxFreq, freqMap[nums[i]])
+
+        contiguousSubarray = inf
+        for i in range(len(nums)-1, -1, -1):
+            if freqMap[nums[i]] == maxFreq:
+                contiguousSubarray = min(contiguousSubarray, i-firstOccurance[nums[i]]+1)
+                freqMap[nums[i]] -= 1
+            
+        return contiguousSubarray
+```
+
+Another solution is to just use a single pass to do all this. 
+We will go thorugh the array, we will keep storing the first index of elements. 
+We will also keep increasing the freq of the elements. 
+We will also keep updating maxFreq. 
+If maxFreq at any point less the current element's freq 
+**```freqMap[nums[i]] > maxFreq```**
+Then we will update maxFreq and take this elements first and current positions
+difference as the answer. 
+
+If mazFreq is same as current freq then we might have an element with same freq as 
+the most freq element.
+**```freqMap[nums[i]] == maxFreq```**
+In this case we will take res as min of res and take this elements first and current positions difference as the answer. 
+
+See the code:
+```
+class Solution:
+    def findShortestSubArray(self, nums: List[int]) -> int:
+        firstOccurance = {}
+        freqMap = {}
+        maxFreq = -inf
+        contiguousSubarray = 0
+        
+        for i in range(len(nums)):
+            if nums[i] not in firstOccurance:
+                firstOccurance[nums[i]] = i 
+                
+            if nums[i] in freqMap:
+                freqMap[nums[i]] += 1
+            else:
+                freqMap[nums[i]] = 1
+            
+            if freqMap[nums[i]] > maxFreq:
+                maxFreq = freqMap[nums[i]]
+                contiguousSubarray = i - firstOccurance[nums[i]] + 1
+            
+            if freqMap[nums[i]] == maxFreq:
+                contiguousSubarray = min(contiguousSubarray, i-firstOccurance[nums[i]]+1)
+                
+        return contiguousSubarray
+```
+
+Let me know if any questions. 
+
+
+	
