@@ -1,0 +1,100 @@
+# We can use a heap to store the greatest k elements from the list along with their indices. 
+# Once we have that we can use a set to store those indices and use that list to add the values
+# to the answer. 
+
+class Solution:
+    def maxSubsequence(self, nums: List[int], k: int) -> List[int]:
+        newNums = [[nums[i], i] for i in range(len(nums))]
+        heap = []
+        
+        for i in range(len(nums)):
+            heappush(heap, newNums[i])
+            if len(heap) > k:
+                heappop(heap)
+        
+        setOfIndex = set()
+        for i in range(len(heap)):
+            setOfIndex.add(heap[i][1])
+
+        maxSeq = []
+        for i in range(len(nums)):
+            if i in setOfIndex:
+                maxSeq.append(nums[i])
+            
+        return maxSeq
+            
+########################################################################
+
+class Solution:
+    def maxSubsequence(self, nums: List[int], k: int) -> List[int]:
+        newNums = [[nums[i], i] for i in range(len(nums))]
+        heap = []
+        
+        for i in range(len(nums)):
+            heappush(heap, newNums[i])
+            if len(heap) > k:
+                heappop(heap)
+        
+        newHeap = []
+        for i in range(len(heap)):
+            heappush(newHeap, heap[i][1])
+
+        maxSeq = []
+        while newHeap:
+            maxSeq.append(nums[heappop(newHeap)])
+            
+        return maxSeq
+    
+########################################################################
+
+class Solution:
+    def maxSubsequence(self, nums: List[int], k: int) -> List[int]:
+        newNums = [[nums[i], i] for i in range(len(nums))]
+        newNums.sort(reverse = True)
+        newNums = sorted(newNums[:k], key = lambda x: x[1])
+        maxSeq = []
+        
+        for i in range(k):
+            maxSeq.append(newNums[i][0])
+            
+        return maxSeq
+                    
+########################################################################
+
+class Solution:
+    def maxSubsequence(self, nums: List[int], k: int) -> List[int]:
+        kLargestIndex = set()
+        
+        for i in range(k):
+            min = -inf
+            minIndex = -1
+            for j in range(len(nums)):
+                if j in kLargestIndex:
+                    continue
+                
+                if nums[j] > min:
+                    min = nums[j]
+                    minIndex = j
+            kLargestIndex.add(minIndex)   
+        
+        maxSubseq = []
+        
+        for i in range(len(nums)):
+            if i in kLargestIndex:
+                maxSubseq.append(nums[i])
+                
+        return maxSubseq
+                    
+        
+        
+        
+
+            
+        
+                    
+        
+        
+        
+                    
+        
+        
