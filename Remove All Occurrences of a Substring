@@ -1,0 +1,32 @@
+class Solution:
+    def removeOccurrences(self, s: str, part: str) -> str:
+        while part in s:
+            s = s[0:s.index(part)] + s[s.index(part)+len(part):]
+        return s
+
+class Solution:
+    def removeOccurrences(self, s: str, part: str) -> str:
+        n, m = len(s), len(part)
+        temp = ''
+        j = 0
+        for i in range(n):
+            temp = temp + s[i]
+            if part in temp:
+                temp = temp.replace(part, '')
+        return temp
+
+#Stack Solution:
+class Solution:
+    def removeOccurrences(self, s: str, part: str) -> str:
+        stack = []
+        for i in range(len(s)):
+            stack.append(s[i])
+            if len(stack) >= len(part) and ''.join(stack[len(stack)-len(part):]) == part:
+                for i in range(len(part)):
+                    stack.pop()
+        return ''.join(stack)
+            
+            
+            
+                
+            
