@@ -1,0 +1,32 @@
+class Solution:
+    def reformat(self, s: str) -> str:
+        digits, chars = [], []
+        for char in s:
+            if char.isalpha():
+                chars.append(char)
+            else:
+                digits.append(char)
+            
+        if abs(len(digits)-len(chars)) > 1:
+            return ''
+        
+        res = []
+        if len(digits) == len(chars):
+            for i in range(len(chars)):
+                res.append(digits[i])
+                res.append(chars[i])
+            return ''.join(res)
+        
+        if len(digits) > len(chars):
+            for i in range(len(chars)):
+                res.append(digits[i])
+                res.append(chars[i])
+            res.append(digits[-1])
+        else:
+            for i in range(len(digits)):
+                res.append(chars[i])
+                res.append(digits[i])
+            res.append(chars[-1])
+            
+        return ''.join(res)
+        
