@@ -1,0 +1,22 @@
+# Take the number and remove 2 from it by dividing repeatedly by 2
+# Now divide repeadtly by 3 and remove 3 from it as well. 
+# Then do the same for 5.
+# If the remaining number becomes 1 that means the only prime factors were 2, 3 and 5
+# Since by dividing by 2, 3 and 5, the number has become 1, it is ugly
+# If it is not 1 that means there are other factors as well, then we will return
+# false, meaning it is not ugly. 
+
+
+class Solution:
+    def isUgly(self, n: int) -> bool:
+        if n <= 0:
+            return False
+        
+        while n % 2 == 0:
+            n = n // 2
+        while n % 3 == 0:
+            n = n // 3
+        while n % 5 == 0:
+            n = n // 5
+
+        return n == 1
