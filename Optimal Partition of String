@@ -1,0 +1,73 @@
+class Solution:
+    def partitionString(self, s: str) -> int:
+        seen = set()
+        count = 1
+        i, j = 0, 0
+        while j < len(s):
+            if s[j] not in seen:
+                seen.add(s[j])
+                j += 1
+            else:
+                seen.clear()
+                count += 1
+        return count
+
+########################################################
+
+class Solution:
+    def partitionString(self, s: str) -> int:
+        seen = [0] * 26
+        count = 1
+        i = 0
+        while i < len(s):
+            if seen[ord(s[i]) - ord('a')] == 0:
+                seen[ord(s[i]) - ord('a')] += 1
+                i += 1
+            else:
+                for j in range(26):
+                    seen[j] = 0
+                count += 1
+        return count
+    
+########################################################
+
+class Solution:
+    def partitionString(self, s: str) -> int:
+        lastSeen = [-1] * 26
+        prevPartitionEnd = -1
+        partitions = 0
+        
+        for i in range(len(s)):
+            char = ord(s[i]) - ord('a')
+            if lastSeen[char] >= prevPartitionEnd:
+                partitions += 1
+                prevPartitionEnd = i
+            lastSeen[char] = i
+        return partitions
+
+########################################################
+# We will use a flag to know if the current char has already occured or not. 
+# flag can become a 26 bit long value since we can have 26 chars at max. 
+# To check is the current char has already occured we will use flag & 1 << char
+# char is equal to the numeric value of char in english alphabet. 
+# eg a = 0, b = 1, c = 3 and so on.
+# When we do 1 << char, we make a string like 1, 01, 001, 0001 for a, b, c, d, e etc
+# Then we and it with flag, if char has already occured this and will be 1
+# We will reset the flag by flag = 0 and increase no of partitions by 1. 
+# If and is false, then we set that char's bit in the flag by 
+# flag = flag | 1 << char
+
+class Solution:
+    def partitionString(self, s: str) -> int:
+        flag = 0
+        partitions = 1        
+        for i in range(len(s)):
+            char = ord(s[i]) - ord('a')
+            if flag & 1 << char:
+                flag = 0
+                partitions += 1
+            flag = flag | 1 << char
+        return partitions
+                
+
+                    
