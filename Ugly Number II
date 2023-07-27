@@ -1,0 +1,34 @@
+# We will use an array of length n. We will have 1 at 0th index because 1 is the 
+# base case. 
+# Now we will take three pointers for 2, 3 and 5. We will mupltiply 2, 3, 5 
+# with their pointer values and take the min value and increase whichever pointer 
+# gave us smaller value. 
+
+# We have an array k of first n ugly number. We only know, at the beginning, the first one, which is 1. Then
+
+# k[1] = min( k[0]x2, k[0]x3, k[0]x5). The answer is k[0]x2. So we move 2's pointer to 1. Then we test:
+
+# k[2] = min( k[1]x2, k[0]x3, k[0]x5). And so on. Be careful about the cases such as 6, in which we need to forward both pointers of 2 and 3.
+
+# x here is multiplication.
+
+class Solution:
+    def nthUglyNumber(self, n: int) -> int:
+        uglyNumbers = [1] + [0] * (n-1)
+        twosPointer, threesPointer, fivesPointer = 0, 0, 0
+        
+        for i in range(1, len(uglyNumbers)):
+            twoVal = 2 * uglyNumbers[twosPointer]
+            threeVal = 3 * uglyNumbers[threesPointer]
+            fiveVal = 5 * uglyNumbers[fivesPointer]
+            minVal = min(min(twoVal, threeVal), fiveVal)
+            
+            if minVal == 2 * uglyNumbers[twosPointer]:
+                twosPointer += 1
+            if minVal == 3 * uglyNumbers[threesPointer]:
+                threesPointer += 1
+            if minVal == 5 * uglyNumbers[fivesPointer]:
+                fivesPointer += 1
+            uglyNumbers[i] = minVal
+        
+        return uglyNumbers[-1]
