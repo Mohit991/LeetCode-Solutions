@@ -1,0 +1,62 @@
+# Use DFS to go through the matrix and traverse each eligible path as per the question. 
+# A falling path starts at any element in the first row and chooses the element in the next row that is either directly below or diagonally left/right. Specifically, the next element from position (row, col) will be (row + 1, col - 1), (row + 1, col), or (row + 1, col + 1).
+
+# When i == row, then you have reached at the end of the matrix and you can return now. 
+# take diagonallyLeft, diagonallyRight, below = inf, inf, inf; bc we want min val
+# get the min values out of them and return that. 
+
+# Now we must remmeber the answers to the intermediate slots bc when we come back
+# we need to calculate them again. To avoid that we will simply store them in memo.
+
+class Solution:
+    def minFallingPathSum(self, matrix: List[List[int]]) -> int:
+        row, col = len(matrix), len(matrix[0])
+        memo = [[inf for i in range(col)] for i in range(row)]
+        
+        def dfs(i, j):
+            if i == row:
+                return 0
+            if memo[i][j] != inf:
+                return memo[i][j]
+            
+            diagonallyLeft, diagonallyRight, below = inf, inf, inf
+            if j-1 >= 0:
+                diagonallyLeft = dfs(i+1, j-1) + matrix[i][j]
+            if j+1 < col:
+                diagonallyRight = dfs(i+1, j+1) + matrix[i][j]
+            below = dfs(i+1, j) + matrix[i][j]
+        
+            memo[i][j] = min(diagonallyLeft, diagonallyRight, below)
+            return memo[i][j]
+        
+        minFallingPath = inf
+        for c in range(col):
+            minFallingPath = min(minFallingPath, dfs(0, c))
+        return minFallingPath
+    
+###########################################################################
+
+class Solution:
+    def minFallingPathSum(self, matrix: List[List[int]]) -> int:
+        row, col = len(matrix), len(matrix[0])
+        memo = {}
+        
+        def dfs(i, j):
+            if (i, j) in memo:
+                return memo[(i, j)]
+            if i == row:
+                return 0            
+            diagonallyLeft, diagonallyRight, below = inf, inf, inf
+            if j-1 >= 0:
+                diagonallyLeft = dfs(i+1, j-1) + matrix[i][j]
+            if j+1 < col:
+                diagonallyRight = dfs(i+1, j+1) + matrix[i][j]
+            below = dfs(i+1, j) + matrix[i][j]
+        
+            memo[(i, j)] = min(diagonallyLeft, diagonallyRight, below)
+            return memo[(i, j)]
+        
+        minFallingPath = inf
+        for c in range(col):
+            minFallingPath = min(minFallingPath, dfs(0, c))
+        return minFallingPath
