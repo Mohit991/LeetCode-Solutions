@@ -1,0 +1,62 @@
+# We can use this split and dontSplit method to get the total. 
+# We count ones in the string, if ones == 1, here we have two options, 
+# split or dontSplit, so we do that. 
+# Remember that when ones > 1, we immediately return 0, since we cant split it now.
+# Time complexity: O(N*2)
+# Space complexity: O(N*2) + O(N)
+
+class Solution:
+    def numberOfGoodSubarraySplits(self, nums: List[int]) -> int:
+        memo = {}
+        def dfs(i, ones):
+            if i >= len(nums) and ones == 1:
+                return 1
+            if i >= len(nums):
+                return 0
+            if nums[i] == 1:
+                ones += 1
+            if ones > 1:
+                return 0
+            if (i, ones) in memo:
+                return memo[(i, ones)] 
+            
+            split = 0
+            if ones == 1:
+                split = dfs(i+1, 0) 
+            dontSplit = dfs(i+1, ones)
+            
+            memo[(i, ones)] = (split + dontSplit) % 1000000007
+            return memo[(i, ones)]
+        return dfs(0, 0)
+
+# Another way to do it is to use maths to solve it. 
+# We just need to find number of ways we can split.
+# First we will find the first one and if there is no one in the string, 
+# then just return 0
+# After you find a first one, we will find the number of zeros between each one
+# and multiply the answer by that zeroCount, we will continue to do that til the end. 
+# Approach
+# Eliminate initial zeros. Check if iteration reached end or not. If reached then return 0 as there are no 1s in the input.
+# Strat counting 0's between two 1s and mulitply (count + 1) to ans, as we can have n+1 number of division possible in between those two 1's
+
+class Solution:
+    def numberOfGoodSubarraySplits(self, nums: List[int]) -> int:
+        ans = 1
+        i = 0
+        while i < len(nums):
+            if nums[i] == 1:
+                break
+            i += 1
+        if i == len(nums):
+            return 0
+        
+        i += 1    
+        zeroCount = 1
+        while i < len(nums):
+            if nums[i] == 1:
+                ans = (ans * zeroCount) % 1000000007 
+                zeroCount = 1
+            else:
+                zeroCount += 1
+            i += 1
+        return ans
