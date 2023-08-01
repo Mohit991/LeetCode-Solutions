@@ -1,0 +1,43 @@
+# Find the difference between nums2 and nums1 and store it in temp1
+# Find the maxSubarraySum of temp1. 
+# This maxSubarray is the part which we can take from nums2 and replace with 
+# same part of nums1 and it will increase the sum of nums1 by maxSubarraySum. 
+# We will find maxScore as max of sum1 and sum1 + maxSubarraySum. 
+
+# We will process nums2 the same way and find the maxScore. 
+
+# TC: O(n), SC: O(n)
+# Note: You can make the SC O(1) by not creating temp1 and temp2 and directly
+# using the difference but that would make the code a little complicated. 
+
+class Solution:
+    def maximumsSplicedArray(self, nums1: List[int], nums2: List[int]) -> int:
+        n = len(nums1)
+        sum1 = sum(nums1)
+        sum2 = sum(nums2)
+        maxScore = -inf
+        
+        #Processing nums1: Replacing subarry of nums2 in nums1
+        temp1 = [nums2[i]-nums1[i] for i in range(n)]
+        maxSubarraySum = 0
+        subarraySum = 0
+        for n in temp1:
+            subarraySum += n
+            maxSubarraySum = max(maxSubarraySum, subarraySum)
+            if subarraySum < 0:
+                subarraySum = 0
+        maxScore = max(sum1, sum1+maxSubarraySum)
+        
+        #Processing nums2: Replacing subarry of nums1 in nums2
+        temp2 = [nums1[i]-nums2[i] for i in range(len(nums1))]
+        maxSubarraySum = 0
+        subarraySum = 0
+        for n in temp2:
+            subarraySum += n
+            maxSubarraySum = max(maxSubarraySum, subarraySum)
+            if subarraySum < 0:
+                subarraySum = 0
+        maxScore = max(maxScore, sum2+maxSubarraySum)
+        
+        return maxScore
+            
