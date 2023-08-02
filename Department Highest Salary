@@ -1,0 +1,34 @@
+-- We can write an inner query to get max salary department wise. 
+-- After that we can use that result and join it with employee and department
+-- to get department name, employee name and max salary. 
+
+/* Write your T-SQL query statement below */
+select d.name Department, emp.name Employee, temp.salary Salary from 
+(select dept.id as deptid, max(emp.salary) as salary
+from employee emp inner join department dept
+on emp.departmentId = dept.id
+group by dept.id) temp
+inner join employee emp on emp.departmentId = temp.deptid
+and temp.salary = emp.salary
+inner join Department d on d.id = temp.deptid
+
+-- --Other possible solutions
+
+-- SELECT D.Name,A.Name,A.Salary 
+-- FROM 
+-- 	Employee A,
+-- 	Department D   
+-- WHERE A.DepartmentId = D.Id 
+--   AND NOT EXISTS 
+--   (SELECT 1 FROM Employee B WHERE B.Salary > A.Salary AND A.DepartmentId = B.DepartmentId) 
+
+-- -- 
+
+-- SELECT D.Name AS Department ,E.Name AS Employee ,E.Salary 
+-- from 
+-- 	Employee E,
+-- 	Department D 
+-- WHERE E.DepartmentId = D.id 
+--   AND (DepartmentId,Salary) in 
+--   (SELECT DepartmentId,max(Salary) as max FROM Employee GROUP BY DepartmentId)
+  
