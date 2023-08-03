@@ -1,0 +1,15 @@
+# Lets take the opposite of the first bit. 
+# If first bit = 1 then OppositeBit = 0 and vice versa. 
+# Now take last bit of n and see if OppositeBit and last bit match, is yes, 
+# return False. If no, then update opposite bit with current bit. Shift n by a bit to
+# the left. 
+
+class Solution:
+    def hasAlternatingBits(self, n: int) -> bool:
+        OppositeBit = 0 if n%2 else 1
+        while n > 0:
+            if OppositeBit == n&1:
+                return False
+            OppositeBit = n&1
+            n = n >> 1
+        return True
