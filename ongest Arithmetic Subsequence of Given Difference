@@ -1,0 +1,23 @@
+# seq is a dict which will have the previous sequences we have found so far..
+# When we see a number n, we try to find a previous number of the seq
+# This number is n - difference, if this number is present then we can just take
+# whatever is the length of the seq so far ie seq[n - difference] and add 1 in it
+# for the current number that we just got. 
+
+# This could also be the max seq so we do maxSeq = max(maxSeq, seq[n]). 
+
+# If the number is not in the seq then we will put it in seq and put length = 1
+# because this must be the first number in the seq. 
+
+class Solution:
+    def longestSubsequence(self, arr: List[int], difference: int) -> int:
+        seq = {}
+        maxSeq = 1
+        for n in arr:
+            if n - difference in seq:
+                seq[n] = seq[n - difference] + 1
+                maxSeq = max(maxSeq, seq[n])
+            if n not in seq:
+                seq[n] = 1
+        return maxSeq
+        
