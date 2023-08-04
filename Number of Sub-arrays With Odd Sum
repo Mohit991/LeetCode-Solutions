@@ -1,0 +1,44 @@
+class Solution:
+    def numOfSubarrays(self, arr: List[int]) -> int:
+        oddSumCount = 0
+        for i in range(len(arr)):
+            for j in range(i, len(arr)):
+                currentSum = 0
+                for k in range(i, j+1):
+                    currentSum += arr[k]
+                if currentSum%2 == 1:
+                    oddSumCount += 1
+        return oddSumCount
+
+#########################################################
+
+# accumSum will have the prefix sum ie sum till this point in the array. 
+# oddSumCount, evenSumCount will tell the odd sums and even sums we have seen so far. 
+# If accumSum is even, then we can add oddSumCount to the res bc even - odd = odd
+# if we remove all the even sums from current accum sum which is odd we will get
+# all the odd sum subarrays. 
+
+# If accumSum is odd, then we can add evenSumCount to the res bc odd - even = odd
+# if we remove all the odd sums from current accum sum which is even we will get
+# all the odd sum subarrays. Also we need to add 1 additionally because current sum
+# is also odd and must be added to the answer.
+
+class Solution:
+    def numOfSubarrays(self, arr: List[int]) -> int:
+        totalOddSumCount = 0
+        oddSumCount, evenSumCount = 0, 0
+        accumSum = 0
+            
+        for i in range(len(arr)):
+            accumSum += arr[i]
+            if accumSum%2 == 0:
+                totalOddSumCount += oddSumCount
+                evenSumCount += 1
+            else:
+                totalOddSumCount += evenSumCount + 1
+                oddSumCount += 1
+                
+        return totalOddSumCount % 1000000007
+        
+                
+        
