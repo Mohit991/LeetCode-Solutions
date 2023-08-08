@@ -1,0 +1,16 @@
+# Start from first values. Take a variable to keep track of the maximum
+# value which has already occured. As you move forward, with each step 
+# decrease 1 from the prevMax, because at every step i-j is increasing 
+# by 1. Find maxScore = max(maxScore, prevMax + values[i]). 
+# Also, at every step update the 
+# prevMax as prevMax = max(prevMax, values[i])
+
+class Solution:
+    def maxScoreSightseeingPair(self, values: List[int]) -> int:
+        prevMax = values[0]
+        maxScore = -inf
+        for i in range(1, len(values)):
+            prevMax -= 1
+            maxScore = max(maxScore, prevMax + values[i])
+            prevMax = max(prevMax, values[i])
+        return maxScore
