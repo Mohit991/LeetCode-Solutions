@@ -1,0 +1,32 @@
+# Instead of storing the prefix sums, this time we will store the previous reminders
+# This is because it is a problem of finding the multiple of k. 
+# We will crate a map with remainder and index. 
+# Initialise it with 0:-1, ie because 0 is always of multiple of k as given. 
+# Put index of it as -1 beacause if we see a sum multiple of k, we will try to find
+# sum%k ie 0 and we'll see 0 at index -1 and return true. 
+# As we move in the array we try to find sum%k. If we have seen sum%k already
+# that means the remaining array after that index is a mutiple of k. 
+# lets say k = 6, let say we see sum=9, 9%6=3, now if we see 15, 15%6=3
+# 15-9 = 6, which is a multiple of 6. Using this logic we will go through the array
+# finding the sum and try to find the remainder of sum with k in remainder.
+# If it is there then the index of this and current index must be more than 1 apart. 
+# This is because in the question it is given that array must be more than 1 length. 
+
+# If you see the remainder again and the different between index is not more than 1
+# then keep the previous entry of the remainder in the map. Dont update the entry. 
+# We need the older remainder entry. 
+
+class Solution:
+    def checkSubarraySum(self, nums: List[int], k: int) -> bool:
+        remainderMap = {0:-1}
+        sum = 0
+        for i in range(len(nums)):
+            n = nums[i]
+            sum += n
+            remainder = sum%k
+            if remainder in remainderMap:
+                if i - remainderMap[remainder] > 1:
+                    return True
+            else:
+                remainderMap[remainder] = i
+        return False
