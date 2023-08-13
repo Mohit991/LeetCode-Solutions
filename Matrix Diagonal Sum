@@ -1,0 +1,22 @@
+# We just need to look at the index of the diagonals. 
+# Primary diagonal in a n sqaure matrix looks like: mat[0][0], mat[1][1], ..., mat[n][n]
+# Secondary diagonal looks like: mat[0][n], mat[1][n-1], mat[2][n-1], ..., mat[n][0]
+# We also need to avoid the cells which we included in primary diagonal calculations, 
+# in secondary diagonal calculations. 
+
+
+
+class Solution:
+    def diagonalSum(self, mat: List[List[int]]) -> int:
+        rows = len(mat)
+        primaryDiagonalSum = 0
+        for i in range(rows):
+            primaryDiagonalSum += mat[i][i]
+        
+        secondaryDiagonalSum = 0
+        for i in range(rows):
+            if i == rows - 1 - i: #Avoiding cells already incliuded in primary diaognal
+                continue
+            secondaryDiagonalSum += mat[i][rows - 1 - i]
+            
+        return primaryDiagonalSum + secondaryDiagonalSum
