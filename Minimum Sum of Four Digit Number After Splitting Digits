@@ -1,0 +1,49 @@
+class Solution:
+    def minimumSum(self, num: int) -> int:
+        memo = [0] * 10
+        temp = num
+        while temp:
+            n = temp%10 
+            temp = temp//10
+            memo[n] += 1
+        
+        new1, new2 = 0, 0
+        for i in range(10):
+            if memo[i] > 0:
+                new1 = i
+                memo[i] -= 1
+                break
+        for i in range(10):
+            if memo[i] > 0:
+                new2 = i 
+                memo[i] -= 1
+                break
+        # print(new1, new2)
+        for i in range(10):
+            if memo[i] > 0:
+                new1 = new1*10 + i 
+                memo[i] -= 1
+                break
+        for i in range(10):
+            if memo[i] > 0:
+                new2 = new2*10 + i 
+                memo[i] -= 1   
+                break
+        # print(new1, new2)
+        return new1 + new2
+
+##############################################################
+
+class Solution:
+    def minimumSum(self, num: int) -> int:
+        digits = []
+        temp = num
+        while temp:
+            digits.append(temp%10)
+            temp //= 10
+        digits.sort()
+        
+        new1 = digits[0] * 10 + digits[2]
+        new2 = digits[1] * 10 + digits[3]
+        return new1 + new2
+        
