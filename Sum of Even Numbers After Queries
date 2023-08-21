@@ -1,0 +1,27 @@
+# Just find the sum of evels values inside the list. 
+# Process the queries, first if the val at that index is even remove it from sum of even.
+# Update the val at the index as per rule, if the val now becomes even add it to the sum of even. 
+# Time: O(max(m, n)), space: O(n), where m = A.length, n = queries.length.
+
+class Solution:
+    def sumEvenAfterQueries(self, nums: List[int], queries: List[List[int]]) -> List[int]:
+        sumOfEven = 0
+        for n in nums:
+            if n%2 == 0:
+                sumOfEven += n
+    
+        res = []
+        for query in queries:
+            val, index = query
+            if nums[index]%2 == 0:
+                sumOfEven -= nums[index]
+            
+            nums[index] += val
+            
+            if nums[index]%2 == 0:
+                sumOfEven += nums[index]
+                
+            res.append(sumOfEven)
+            
+        return res
+            
