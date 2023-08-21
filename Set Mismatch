@@ -1,0 +1,23 @@
+# Since we are given number from 1 to n, We can use number as indexes of the list to make a solution. 
+# We will go through the list and take each element and use it as  index to change 
+# the value at that index to negative by multiplying it by -1.
+# If a number is duplicate, then when we go through the list, while using that number as index, the value will be already negative, that means this is the duplicate and we add it to the ans. 
+# After this whole process, only number at two indexes will still be positve. 
+# One is the index/number which is duplicate, other is the one missing. 
+# We go through the list and if we see a positive number and the index != duplicate number
+# then it must be the missing number. We add it to the ans. 
+
+class Solution:
+    def findErrorNums(self, nums: List[int]) -> List[int]:
+        ans = []
+        for i in range(len(nums)):
+            if nums[abs(nums[i])-1] < 0:
+                ans.append(abs(nums[i]))
+            nums[abs(nums[i])-1] *= -1
+        
+        for i in range(len(nums)):
+            if nums[i] > 0 and i + 1 != ans[0]:
+                ans.append(i+1)
+                break
+                
+        return ans
