@@ -1,0 +1,44 @@
+# We will try to get the all the substrings we can get ending with a, b, c, .. z
+# To avoid duplicate remember that if we see 3 char long string ending at c
+# Then it will be abc, if we see it again we still see 3 char long. We only take 
+# max out of the current largest length of the already calculated length. 
+
+# Thanks @lee215 . I added some explanation here as it took some time for me to figure out
+
+# if the order is continued, the contribution is increased by 1 from previous character contribution
+# example string zabce
+# Values got incremented in the following way
+
+# z -> 1
+# a -> 1 + 1 (or) z + 1 -> 2
+# b -> 1 + 1 + 1 (or) a + 1 -> 3
+# c -> 1 + 1 + 1 + 1 (or) b + 1 -> 4
+# e -> 1 (ord(j) - ord(i)) % 26 != 1 here
+# So the final answer is contribution from z + a + b + c + e (1 + 2 + 3 + 4 + 1 = 11)
+
+# max(res[j], l) is required to handle cases where the character is repeated.
+# For example in zaba, since each each unique character is assigned as key to res, the 2nd a contribution should not replace the 1st a contribution until it exceeds the 1st a contribution
+
+class Solution:
+    def findSubstringInWraproundString(self, s: str) -> int:
+        stringEndsAt = {}
+        stringEndsAt[s[0]] = 1
+        length = 1
+        for i in range(1, len(s)):
+            char = ord(s[i])
+            prevChar = ord(s[i-1])
+            if (char - prevChar) % 26 == 1:
+                length += 1
+            else:
+                length = 1
+                
+            if s[i] in stringEndsAt:
+                stringEndsAt[s[i]] = max(stringEndsAt[s[i]], length)
+            else:
+                stringEndsAt[s[i]] = length
+            
+        totalSubstrings = 0
+        for char in stringEndsAt:
+            totalSubstrings += stringEndsAt[char]
+            
+        return totalSubstrings
