@@ -1,0 +1,53 @@
+# Let us understand this problem with an example
+# let word = "abei"
+
+# All possible substrings:
+
+# a        b       e      i
+# ab       be      ei
+# abe      bei
+# abei
+# So for counting occurences of vowels in each substring, we can count the occurence of each vowel in each substring
+# In this example, count of vowels in substrings are
+
+# a - 4 times
+# e - 6 times
+# i - 4 times
+# And you can observe that occurence of each vowel depends on it's position like below:
+
+# a is at position 0 so it can be present only in the substrings starting at 0
+# e is in the middle so it can be present in the substrings starting at it's position, substrings ending at it's position, and substrings containing it in middle
+# i is at last so it can be present only in the substrings ending at that position
+
+# Did you see any pattern ? Yes !
+
+# A character at position pos can be present in substrings starting at i and substrings ending at j,
+# where 0 <= i <= pos (pos + 1 choices) and pos <= j <= len (len - pos choices)
+# so there are total (len - pos) * (pos + 1) substrings that contain the character word[pos]
+
+# (You can see from above example that e is at position 2 and it's present in substrings "abei", "bei", "ei", "abe", "be", "e"
+# (0 <= start <= pos and pos <= end <= len) and same will be true for each vowel.
+
+
+# From this observation we can generalise the occurence of each vowel in the string as
+
+# here len(abei) = 4
+# a,  pos = 0, count = (4 - 0) * (0 + 1) = 4
+# e,  pos = 2, count = (4 - 2) * (2 + 1) = 6
+# i,  pos = 3, count = (4 - 3) * (3 + 1) = 4
+# So the generalised formula will be
+
+# count = (len - pos) * (pos + 1)
+# and we can keep summing the count of each vowel
+
+class Solution:
+    def countVowels(self, word: str) -> int:
+        total = 0
+        for position in range(len(word)):
+            if word[position] in 'aeiou':
+                substringCanStart = position + 1
+                substringCanEnd = len(word) - position
+                totalSubstrings = substringCanStart * substringCanEnd
+                total += totalSubstrings
+        return total
+            
