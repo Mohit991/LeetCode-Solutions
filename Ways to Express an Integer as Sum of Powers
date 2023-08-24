@@ -1,0 +1,88 @@
+# Best way to solve this problem is to convert it to coin change problem. 
+# To make it simple, we first generate an array with all the values which 
+# can be used to sum up to n. 
+# After that we simply just write the coin change logic with DP(memoization)
+# to find an answer. 
+
+class Solution:
+    def numberOfWays(self, n: int, x: int) -> int:
+        #Generating the values
+        nums = []
+        n1, num = 1, 1
+        while num <= n:
+            nums.append(num)
+            n1 += 1
+            num = n1 ** x
+        
+        #Using coin change logic
+        def findSum(i, currentSum, memo):
+            if (i, currentSum) in memo:
+                return memo[(i, currentSum)]
+            if currentSum == n:
+                return 1
+            if currentSum > n or i >= len(nums):
+                return 0
+            take = findSum(i+1, currentSum + nums[i], memo)
+            dontTake = findSum(i+1, currentSum, memo)
+            memo[(i, currentSum)] = take + dontTake
+            return memo[(i, currentSum)]
+                
+        return findSum(0, 0, {}) % (10 ** 9 + 7)
+    
+########################################################
+
+# We can avoid generating the array. 
+# We can simply use a variable i which we will use to get the value. 
+
+class Solution:
+    def numberOfWays(self, n: int, x: int) -> int:        
+        def findSum(i, currentSum, memo):
+            if (i, currentSum) in memo:
+                return memo[(i, currentSum)]
+            if currentSum == n:
+                return 1
+            if currentSum > n or i ** x > n:
+                return 0
+            take = findSum(i+1, currentSum + i ** x, memo)
+            dontTake = findSum(i+1, currentSum, memo)
+            memo[(i, currentSum)] = take + dontTake
+            return memo[(i, currentSum)]
+                
+        return findSum(1, 0, {}) % (10 ** 9 + 7)
+    
+#################################################################
+
+# Finally we can use bottom up approch using an array dp. 
+# Here we have generated the nums array first, we we can also avoid. 
+
+class Solution:
+    def numberOfWays(self, n: int, x: int) -> int:
+        nums = []
+        n1, num = 1, 1
+        while num <= n:
+            nums.append(num)
+            n1 += 1
+            num = n1 ** x
+        
+        dp = [1] + [0]*n
+        for num in nums:
+            for i in range(len(dp)-1, num-1, -1):
+                dp[i] += dp[i - num] 
+                dp[i] %= (10 ** 9 + 7)
+        return dp[-1] 
+    
+#################################################################
+# If we dont want to generate the array first, we can use a variable num to
+# generate the valid values. 
+
+class Solution:
+    def numberOfWays(self, n: int, x: int) -> int:
+        dp = [1] + [0]*n
+        num = 1
+        while num ** x <= n:
+            val =  num ** x
+            for i in range(len(dp)-1, val -1, -1):
+                dp[i] += dp[i - val] 
+                dp[i] %= (10 ** 9 + 7)
+            num += 1
+        return dp[-1] 
