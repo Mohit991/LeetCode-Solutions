@@ -1,0 +1,71 @@
+# This is a NP problem. Time complexity should be O(4 ^ n), n is the length of array.
+# Basic solution is to take an array of four call it sides. Take each value and add it to
+# each side and do this for each value. So choices for each value is 4. There are n values.
+# Time complexity should be O(4 ^ n) 
+
+# First Optimization:
+# The description says we need to use every single match exactly once, so we can get the length of each side of the square if there is one.
+# if the current length is larger than target length, we don't need to go any further.
+# if (sidesLength[i] + matches[index] > target) continue; 
+
+# Second Optimization:
+# Length of a single match can be very long. If they put long ones after short ones, it will take a long time before my algorithm return false.
+# So I sort all the matches to avoid the worst case
+# Also check is the first value is larger than side length after sorting, if yes, return false. 
+
+# Third Optimization:
+# Concept of DP in optimization: if I have checked the same sides combination before, why do I need to bother checking again?
+# Lets say you see sides [1,3,2,4] and could not find solution, return false
+# As you do recursion and see [1,3,2,4], you should already know that this will be false,
+# because we have seen it before. So, store it in a set and return false if u see again.
+# It even works for different combination eg:
+# lets say sides are currently : [5,7,5,9] , the next element is 3.
+# Therefore we will be applying dfs on the following:
+# [5+3,7,5,9]
+# [5,7+3,5,9]
+# [5,7,5+3,9]
+# [5,7,5,9+3]
+
+# First and third are basically the same, only in a different order. If in the first case, dfs returned false, the third case will return false too.
+# So we don't run dfs in third case.
+    
+class Solution:
+    def makesquare(self, matchsticks: List[int]) -> bool:
+        if len(matchsticks) < 4:
+            return False
+        
+        perimeter = sum(matchsticks)
+        if perimeter%4 != 0:
+            return False
+        
+        sideLength = perimeter // 4
+        sides = [0]*4
+        
+        matchsticks.sort(reverse = True) #Second Optimization
+        if matchsticks[0] > sideLength:
+            return False
+        
+        def dfs(i, alreadySeen):
+            if tuple(sorted(sides)) in alreadySeen: #Third Optimization
+                return False
+            
+            if sides[0] == sides[1] == sides[2] == sides[3] == sideLength:
+                return True
+            
+            if i >= len(matchsticks):
+                return False
+            
+            for side in range(4):
+                if sides[side] + matchsticks[i] > sideLength: #First Optimization
+                    continue
+                    
+                sides[side] += matchsticks[i]
+                if dfs(i+1, alreadySeen):
+                    return True
+                sides[side] -= matchsticks[i]
+                
+                alreadySeen.add(tuple(sorted(sides)))
+            return False
+        
+        return dfs(0, set())
+        
