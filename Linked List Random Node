@@ -1,0 +1,95 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+
+    def __init__(self, head: Optional[ListNode]):
+        self.linkedList = []
+        temp = head
+        while temp:
+            self.linkedList.append(temp)
+            temp = temp.next
+
+    def getRandom(self) -> int:
+        num = randrange(len(self.linkedList))
+        return self.linkedList[num].val
+
+
+# Your Solution object will be instantiated and called as such:
+# obj = Solution(head)
+# param_1 = obj.getRandom()
+
+###################################################################
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+
+    def __init__(self, head: Optional[ListNode]):
+        self.length = 0
+        self.startNode = head
+        temp = head
+        while temp:
+            self.length += 1
+            temp = temp.next
+
+    def getRandom(self) -> int:
+        num = randrange(self.length)
+        temp = self.startNode
+        while num:
+            temp = temp.next
+            num -= 1
+        return temp.val
+
+
+# Your Solution object will be instantiated and called as such:
+# obj = Solution(head)
+# param_1 = obj.getRandom()
+
+###################################################################
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+# When I first got this question, I went through some articles, but it is painful for me to understand abstract notations like i, k, m, n, n-1, k+1...
+
+# After I read this one: http://blog.jobbole.com/42550/, it comes with a simple example and I understood suddenly, and write the code by myself. I translate it to English, so more people can benefit from it.
+
+# Start...
+# When we read the first node head, if the stream ListNode stops here, we can just return the head.val. The possibility is 1/1.
+
+# When we read the second node, we can decide if we replace the result r or not. The possibility is 1/2. So we just generate a random number between 0 and 1, and check if it is equal to 1. If it is 1, replace r as the value of the current node, otherwise we don't touch r, so its value is still the value of head.
+
+# When we read the third node, now the result r is one of value in the head or second node. We just decide if we replace the value of r as the value of current node(third node). The possibility of replacing it is 1/3, namely the possibility of we don't touch r is 2/3. So we just generate a random number between 0 ~ 2, and if the result is 2 we replace r.
+
+# We can continue to do like this until the end of stream ListNode.
+
+class Solution:
+
+    def __init__(self, head: Optional[ListNode]):
+        self.startNode = head
+
+    def getRandom(self) -> int:
+        temp = self.startNode
+        randomVal = self.startNode.val
+        n = 1
+        while temp.next:
+            temp = temp.next
+            r = randrange(n+1)
+            if r == n:
+                randomVal = temp.val
+            n += 1
+        return randomVal
+
+
+# Your Solution object will be instantiated and called as such:
+# obj = Solution(head)
+# param_1 = obj.getRandom()
