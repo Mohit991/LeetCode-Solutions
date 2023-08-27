@@ -1,0 +1,46 @@
+Step 1: Find the common prefix between the two strings. let's call it commonPrefix.
+
+Step 2: Either this commonPrefix or some prefix of the commonPrefix is the res.
+To find the answer, we will have to try all the possible prefixes of this commonPrefix.
+
+Also, we will start from full commonPrefix, then full commonPrefix after removing the last char, then full commonPrefix after removing the last two chars. This way we will reach to the answer quicker.
+Also, if a prefix is the answer, then the length of this prefix must be a multiple of both the strings.
+
+if len(str1) % len(pre) != 0 or len(str2) % len(pre) != 0:
+                continue
+eg str1 = ABABAB, str2 = ABAB
+commonPrefix = ABAB, we first check if ABAB is the answer, but length of this prefix is 4 which is not a multiple of len(str1) which is 6. Hence it cant be the answer. So, we skip it. Next we take ABA, which also fails because 3 is not a multpile of 4(len of str2)
+Next we take AB, which is a multiple of both len of str1 and str2.
+
+Step 3: Find the factor1 and factor2. These variables mean how many times you have to concatenate prefix to get the string.
+
+factor1, factor2 = len(str1) // len(pre), len(str2) // len(pre)
+            if pre*factor1 == str1 and pre*factor2 == str2:
+                return pre
+factor1: how many times you have to concatenate prefix to get the str1.
+factor2: how many times you have to concatenate prefix to get the str2.
+If prefix satisfies these conditions, return that prefix.
+If no result found, return ''.
+
+Python Code:
+
+class Solution:
+    def gcdOfStrings(self, str1: str, str2: str) -> str:
+        count = 0
+        for i in range(min(len(str1), len(str2))):
+            if str1[i] == str2[i]:
+                count += 1
+                i += 1
+            else:
+                break
+                
+        commonPrefix = str1[:count]
+        for i in range(len(commonPrefix)-1, -1, -1):
+            prefix = commonPrefix[:i+1]
+            if len(str1) % len(prefix) != 0 or len(str2) % len(prefix) != 0:
+                continue
+                
+            factor1, factor2 = len(str1) // len(prefix), len(str2) // len(prefix)
+            if prefix*factor1 == str1 and prefix*factor2 == str2:
+                return prefix
+        return ''
