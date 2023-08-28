@@ -1,0 +1,47 @@
+Lets create a variable shouldBeGreater to see the current trend.
+shouldBeGreater means if current element should be greater than the next or not. shouldBeGreater == True means current should be greater than next. shouldBeGreater == False means current should be smaller than next element.
+Lets go through the array.
+If shouldBeGreater and arr[i] < arr[i+1], lets flip the trend by altering the boolean value shouldBeGreater. Increment count and i.
+If not shouldBeGreater and arr[i] > arr[i+1], lets flip the trend by altering the boolean value shouldBeGreater. Increment count and i.
+
+There are also two other cases.
+If the trend is not followed. In that case set the value of boolean
+shouldBeGreater by checking what the trend is going to be from now on.
+Set count to 1. Don't increment i, because if you do so, you will miss the first
+value of the current trend.
+
+Second case is if current and next values are same. In that case just increment
+i and set count to 1.
+If after this whatever was the previous trend in shouldBeGreater, If that is still continueing then you will go with the first two cases.
+If not then you will go the else and correct the trend.
+
+class Solution:
+    def maxTurbulenceSize(self, arr: List[int]) -> int:
+        if len(arr) == 1:
+            return 1
+        
+        shouldBeGreater = True if arr[0] < arr[1] else False
+        count, maxCount = 1, 1
+        i = 0
+        while i < len(arr) - 1:
+            if arr[i] == arr[i+1]:
+                i += 1
+                count = 1
+                continue
+            if shouldBeGreater and arr[i] < arr[i+1]:
+                shouldBeGreater = not shouldBeGreater
+                count += 1
+                maxCount = max(maxCount, count)
+                i += 1
+            elif not shouldBeGreater and arr[i] > arr[i+1]:
+                shouldBeGreater = not shouldBeGreater
+                count += 1
+                maxCount = max(maxCount, count)
+                i += 1
+            else:
+                if arr[i] < arr[i+1]:
+                    shouldBeGreater = True
+                else:
+                    shouldBeGreater = False
+                count = 1
+        return maxCount
