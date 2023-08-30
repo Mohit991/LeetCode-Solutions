@@ -1,0 +1,72 @@
+# We track the minimum cost for all calendar days in dp. For non-travel days, the cost stays the same as for the previous day. For travel days, it's a minimum of yesterday's cost plus single-day ticket, or cost for 8 days ago plus 7-day pass, or cost 31 days ago plus 30-day pass.
+# TC: O(n); You must convert days list to a set for faster search
+# SC: O(365)
+
+class Solution:
+    def mincostTickets(self, days: List[int], costs: List[int]) -> int:
+        travelDays = set(days)
+        dp = [0] + [inf] * 365
+        
+        for i in range(1, 366):
+            if i not in travelDays:
+                dp[i] = dp[i-1]
+            
+            dp[i] = min(dp[i], dp[i-1] + costs[0])
+            dp[i] = min(dp[i], dp[max(0, i-7)] + costs[1])
+            dp[i] = min(dp[i], dp[max(0, i-30)] + costs[2])
+        
+        return dp[-1]
+    
+    
+##################################################################    
+# step1 : understand the problem
+# here we are given days and cost of passes for 1 day pass, week pass, month pass, "pass means , once you buy it is valid for that some period of time which means free travel during that period"
+
+# step 2: logic building and deriving recurence relation
+
+# 1st sub step : asking questions
+# when we buy pass what should we think ?
+# we should think like, what pass should i buy today ?
+# should i buy pass of one day , week or month pass ?
+
+# 2nd sub step : Ariving at recurence relation
+# if i buy one month pass , then i would be able to travel for next 30 days for free, then my cost will be 30 day pass cost + cost for remaining days after 30 day
+# if i buy one week pass , then i would be able to travel for next 7 days for free, then my cost will be 7 day pass cost + cost for remaining days after 30 day
+# if i buy 1 day pass ....... ("you get it");
+
+# so we can skip to next day OR , next week OR next month ,
+# so cost for i would total pay today is going to be ? ... ?
+
+# # a = cost[one day pass] + cost of next day
+# # b = cost[ week pass ] + cost of next day after week
+# # c = cost[ month pass ] + cost of next day after month
+# ie we can skip 1, 7, or 30 days ;
+# cost = min( a , b , c )
+
+class Solution:
+    def mincostTickets(self, days: List[int], costs: List[int]) -> int:
+        def findCost(i, dp):
+            if i >= len(days):
+                return 0
+            
+            if i in dp:
+                return dp[i]
+            
+            costDay = findCost(i+1, dp) + costs[0]
+            
+            j = i
+            while j < len(days) and days[j] < days[i] + 7:
+                j += 1
+            costWeek = findCost(j, dp) + costs[1]
+            
+            j = i
+            while j < len(days) and days[j] < days[i] + 30:
+                j += 1
+            costMonth = findCost(j, dp) + costs[2]
+            
+            dp[i] = min(costDay, costWeek, costMonth)
+            return dp[i]
+        
+        return findCost(0, {})
+
+        
