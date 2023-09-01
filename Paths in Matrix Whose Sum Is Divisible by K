@@ -1,0 +1,39 @@
+# The problem is very similar to unique paths problem. 
+# https://leetcode.com/problems/unique-paths/
+# This problem can be solved with the same procedure. We can use memo to store 
+# i, j, currentSum and result to optimise. 
+# But with this we will consume too much memory because there can be too many 
+# currentSums for a single i, j. 
+# To avoid this instead of storing currentSum at i and j, we will store 
+# currentSum%k. This is because if at some i, j we have currentSum = 10 with k = 3
+# then we store i, j, 10%3 = i, j, 1 = result. When we see i, j, 10 again we return
+# this result. On top of that if we see 13, 16 or any other number whose %k == 3
+# we will return the same result. 
+# This is because it does not matter what the currentSum is, what matters is what is
+# the remainder of currentSum is with k. BC in the end all we want to know if is
+# sum is a multiple of k or not. 
+
+class Solution:
+    def numberOfPaths(self, grid: List[List[int]], k: int) -> int:
+        row, col = len(grid), len(grid[0])
+        mod = 10**9 + 7
+        def traverse(i, j, currentSum, memo):
+            if i >= row or j >= col:
+                return 0
+            if i == row-1 and j == col-1:
+                if (currentSum+grid[i][j])%k == 0:
+                    return 1
+                else:
+                    return 0
+            if (i, j, currentSum%k) in memo:
+                return memo[(i, j, currentSum%k)]
+            
+            down = traverse(i+1, j, currentSum + grid[i][j], memo)  % mod 
+            right = traverse(i, j+1, currentSum + grid[i][j], memo) % mod
+            memo[(i, j, currentSum%k)] = (down+right) % mod
+            return memo[(i, j, currentSum%k)]
+        
+        return traverse(0, 0, 0, {})
+            
+            
+            
