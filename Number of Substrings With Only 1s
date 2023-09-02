@@ -1,0 +1,46 @@
+# Using left and right pointers, we can create a window of 1s and use that to 
+# generate the total substrings. We need to know every window of 1s through the 
+# use of left and right pointers. 
+
+class Solution:
+    def numSub(self, s: str) -> int:
+        count = 0
+        left = 0
+        while left < len(s) and s[left] != '1':
+            left += 1
+        
+        right = left
+        while left < len(s) and right < len(s):
+            count += right - left + 1
+            right += 1
+            if right < len(s) and s[right] == '0':
+                left = right
+                while left < len(s) and s[left] != '1':
+                    left += 1
+                right = left
+            
+        return count % (10**9+7)
+    
+############################################################
+# A very simple solution we can do is to count consecutive 1s just by using 
+# a single variable onesCount. Set onesCount to 0 initially. 
+# If you see a 1 increase the value of this variable by 1. If you see a 0, set its value to 0.
+# By using this logic you will get the count of each substrings of one.
+# At each step you must add onesCount to res. Because that is how many substrings 
+# that will be ending at that index. 
+# eg if you have 111, then at index zero, oneCount = 1, add that res = 1
+# at index one, oneCount = 2, add that res = 1 + 2 = 3
+# at index two, oneCount = 3, add that res = 3 + 3 = 6
+# Which is the right answer. 
+
+class Solution:
+    def numSub(self, s: str) -> int: 
+        onesCount = 0
+        total = 0
+        for char in s:
+            if char == '1':
+                onesCount += 1
+            else:
+                onesCount = 0
+            total += onesCount
+        return total % (10**9 + 7)
