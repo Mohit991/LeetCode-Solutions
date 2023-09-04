@@ -1,0 +1,28 @@
+# Just by looking at the question, you can tell we can use a heap to solve it.
+# Remember that python does not have a max heap, so, we are going to use min heap,
+# and convert that to max heap by pushing -nagative items. 
+# Remove the max item, get the correct values; newItem; floor(piles[i] / 2)
+# Push it back to the heap.
+# At the end return the sum of the heap. 
+# TC: O(n + klogn); O(n) for n pushes to the heap. 
+# SC: O(n) for the heap. 
+
+class Solution:
+    def minStoneSum(self, piles: List[int], k: int) -> int:
+        heap = []
+        for pile in piles:
+            heappush(heap, -pile)
+        
+        while k > 0:
+            item = -heappop(heap)
+            newItem = item//2
+            newItem = item - newItem
+            heappush(heap, -newItem)
+            k -= 1
+        
+        # pileSum = 0
+        # for pile in heap:
+        #     pileSum += -pile
+        
+        return -sum(heap)
+    
