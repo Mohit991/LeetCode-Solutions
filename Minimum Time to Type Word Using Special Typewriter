@@ -1,0 +1,14 @@
+Distance1 is the distance between two chars. It can be clockwise or anti clockwise
+depending upon which char is bigger; current or the next one.
+Distance2 is the distance which we will get the travelling opposite to the direction of distance1. If distance1 was clockwise, distance2 will be anti clockwise and vice versa.
+At the end we add len(word) to the time because it takes one second to type a char.
+
+class Solution:
+    def minTimeToType(self, word: str) -> int:
+        time = 0
+        word = 'a' + word #Because the pointer is initially at 'a'
+        for i in range(len(word)-1):
+            distance1 = abs(ord(word[i]) - ord(word[i+1])) 
+            distance2 = abs(distance1 - 26) 
+            time += min(distance1, distance2)
+        return time + len(word) - 1 #-1 because 'a' was added to the word
