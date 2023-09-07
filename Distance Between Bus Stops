@@ -1,0 +1,28 @@
+# First find the totalDistance. 
+# Then find the distance between start to destination. 
+# oneDirection distance is found through this loop. If you remove this distance from 
+# the total distance then that will be the distance in the other direction.
+# return the min out of these. 
+
+class Solution:
+    def distanceBetweenBusStops(self, distance: List[int], start: int, destination: int) -> int:
+        totalDistance = sum(distance)
+        oneDirection = 0
+        for i in range(min(start, destination), max(start, destination)):
+            oneDirection += distance[i]
+        return min(oneDirection, totalDistance-oneDirection)
+    
+#########################################################################
+# Just one loop
+
+class Solution:
+    def distanceBetweenBusStops(self, distance: List[int], start: int, destination: int) -> int:
+        firstDirection = 0
+        secondDirection = 0
+        for i in range(len(distance)):
+            if start <= i < destination or destination <= i < start:
+                firstDirection += distance[i]
+            else:
+                secondDirection += distance[i]
+        return min(firstDirection, secondDirection)
+        
