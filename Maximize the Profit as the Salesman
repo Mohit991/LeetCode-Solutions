@@ -1,0 +1,61 @@
+# Using Recursion:
+# first we need to sort the offers. 
+# Now for every offer we have two choices, take it or not take it. 
+# But we can only take it if the previous offer it took does not cover the start
+# house of the currentOffer. 
+# Then we can return the max of take or dont take. 
+
+class Solution:
+    def maximizeTheProfit(self, n: int, offers: List[List[int]]) -> int:
+        offers.sort()
+        memo = {}
+        
+        def findProfit(i, end):
+            if i >= len(offers):
+                return 0
+            
+            if (i, end) in memo:
+                return memo[(i, end)]
+            
+            take, dontTake = 0, 0
+            if end < offers[i][0]:
+                take = findProfit(i+1, offers[i][1]) + offers[i][2]
+            dontTake = findProfit(i+1, end)
+            memo[(i, end)] = max(take, dontTake)
+            return memo[(i, end)]
+        
+        return findProfit(0, -inf)
+    
+###################################################################
+
+# For true DP solution, we will create an array dp of length n+1
+# dp[i] = max gold we can make ending at house i
+# For this solution to work, we will sort the offers array based on end house.
+# we will go through the houses(ie dp). We will initilise the current house's max 
+# gold with previous houses value. 
+# We will take all the current offers and if the offer can be applied for the 
+# current house ie offers[currentOffer][1] + 1 <= house ie the end house of current
+# offer is below the current house, in that case we will take start and end values.
+# If the offers end house is current house in that case, we will take the max value
+# dp[house] = max(dp[house], dp[start-1] + gold)
+# Note: we are taking +1 for start and end because we are using houses as 1 to n
+# and not 0 to n-1. 
+# With this we will only have to go through n houses and all the offers. 
+# TC will be O(n*m); m = no of offers.
+
+class Solution:
+    def maximizeTheProfit(self, n: int, offers: List[List[int]]) -> int:
+        dp = [0 for i in range(n+1)]
+        offers = sorted(offers, key = lambda x:x[1])
+        currentOffer = 0
+        for house in range(1, len(dp)):
+            dp[house] =  dp[house-1]
+            while currentOffer < len(offers) and offers[currentOffer][1] + 1 <= house:
+                start = offers[currentOffer][0] + 1
+                end = offers[currentOffer][1] + 1
+                gold = offers[currentOffer][2]
+                if end == house:
+                    dp[house] = max(dp[house], dp[start-1] + gold)
+                currentOffer += 1
+        # print(dp)            
+        return dp[-1]
