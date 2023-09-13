@@ -1,0 +1,57 @@
+# We need to buy the stock and sell it for some profit. Then we will collect all the profit from all of these transactions.
+
+# buy means at what price we bought and is initialised to first price(we buy at first day).
+# Profit is initialised to 0.
+
+# As we go though the prices, if current price is less than the bought price(buy), then we forget about our bought price and update it with the current price because it is smaller.
+# If currentPrice is more than bought price then we can sell and make a profit. So, we increase the profit by profit += currentPrice - buy . We also update our bought to current price.
+
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        buy = prices[0]
+        profit = 0
+        
+        for currentPrice in prices:
+            if currentPrice < buy:
+                buy = currentPrice
+            else:
+                profit += currentPrice - buy
+                buy = currentPrice
+                
+        return profit
+    
+    
+                
+##############################################################
+
+# Lets have a variable canBuy which will tell wether we have previously bought 
+# a stock or not. If we have bought ie canBuy == True then we have two choices 
+# at the current value. We can either sell at this price or not sell. 
+# So, if you can buy you have two choices, buy or dont buy
+# also at sell you have two choices, sell or dont sell. 
+# When you buy you lose price[i] bc you invest that money. 
+# when you sell you get price[i] bc you get that money. 
+
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        memo = {}
+        def find(canBuy, i):
+            if (i, canBuy) in memo:
+                return memo[(i, canBuy)]
+            if i >= len(prices):
+                return 0
+            if canBuy:
+                buy = find(False, i+1) - prices[i]
+                dontBuy = find(True, i+1)
+                memo[(i, canBuy)] =  max(buy, dontBuy)
+                return memo[(i, canBuy)]
+            else:
+                sell = find(True, i) + prices[i]
+                dontSell = find(True, i+1)
+                return max(sell, dontSell)
+        return find(True, 0)
+    
+    
+    
+    
+    
