@@ -1,0 +1,38 @@
+#Memoization:
+class Solution:
+    def countGoodStrings(self, low: int, high: int, zero: int, one: int) -> int:
+        mod = 10**9 + 7
+        memo = {}
+        def countStrings(length):
+            if length > high:
+                return 0
+            if length in memo:
+                return memo[length]
+            
+            #If the length is in the range then add 1 already. 
+            #Because the current string is also a valid string and
+            #then go forward. 
+            if length >= low:
+                memo[length] = 1 + countStrings(length+zero) + countStrings(length+one)
+                return memo[length] % mod
+            else:
+                memo[length] = countStrings(length+zero) + countStrings(length+one)
+                return memo[length] % mod
+            
+        return countStrings(0)
+    
+#Tabulation:
+class Solution:
+    def countGoodStrings(self, low: int, high: int, zero: int, one: int) -> int:
+        mod = 10**9 + 7
+        memo = [1] + [0]*high
+        for i in range(min(zero, one), high+1):
+            if i >= zero:
+                memo[i] = memo[i] + memo[i-zero] % mod
+            if i >= one:
+                memo[i] = memo[i] + memo[i-one] % mod
+                
+        totalCount = 0
+        for i in range(low, high+1):
+            totalCount += memo[i] % mod
+        return totalCount % mod 
