@@ -1,0 +1,32 @@
+# Lets have a variable canBuy which will tell wether we have previously bought 
+# a stock or not. If we have bought ie canBuy == True then we have two choices 
+# at the current value. We can either sell at this price or not sell. 
+# Also, we have a count variable which tells how many transactions we have 
+# done so far. Obviously when we sell the transCount increases by 1. 
+# When the transCount == k, we return because we can do max k transactions. 
+# So, if you can buy you have two choices, buy or dont buy
+# also at sell you have two choices, sell or dont sell. 
+# When you buy you lose price[i] bc you invest that money. 
+# when you sell you get price[i] bc you get that money.
+
+class Solution:
+    def maxProfit(self, k: int, prices: List[int]) -> int:
+        memo = {}
+        def find(canBuy, i, transCount):
+            if i >= len(prices) or transCount == k:
+                return 0
+            if (canBuy, i, transCount) in memo:
+                return memo[(canBuy, i, transCount)]
+            
+            if canBuy:
+                buy = find(False, i+1, transCount) - prices[i]
+                dontBuy = find(True, i+1, transCount)
+                memo[(canBuy, i, transCount)] = max(buy, dontBuy)
+                return memo[(canBuy, i, transCount)]
+            else:
+                sell = find(True, i, transCount+1) + prices[i]
+                dontSell = find(False, i+1, transCount)
+                memo[(canBuy, i, transCount)] = max(sell, dontSell)
+                return memo[(canBuy, i, transCount)]
+            
+        return find(True, 0, 0)
