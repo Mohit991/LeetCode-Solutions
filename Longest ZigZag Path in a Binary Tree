@@ -1,0 +1,38 @@
+#Explore the whole tree using the traverse method. 
+#We will keep a variable isLeft which will tell us which direction
+#we should go to continue our zigzag motion. if isLeft = True then 
+#we should go to left to continue our zigzag. If False then we should
+#go right to continue our zigzag motion.
+# At every step if we go in the right direction as per zigzag then 
+#we take the already counted steps by 1 and move forward. 
+#If we go to the wrong direction, then we make steps = 0
+#because this is not the correct zigzag motion and we are starting a new
+#zigzag from this point. When we reach the end then our zigzag motion 
+#will stop. At this point we should return steps. 
+#We need to take the max steps we can make by moving towards the left or 
+#right at any node. 
+#we call this method from root.left with isLeft = False because we just 
+#moved left from root and now to continue zigzag we should move to the 
+#right hence isLeft = False.
+#we call this method from root.right with isLeft = True because we just 
+#moved right from root and now to continue zigzag we should move to the 
+#left hence isLeft = True.
+#We pass 0 for both the cases because we dont have to count the number 
+#of nodes. We need to count the number of edges. 
+
+class Solution:
+    def longestZigZag(self, root: Optional[TreeNode]) -> int:
+        def traverse(isLeft, node, steps):
+            if not node:
+                return steps
+            if isLeft:
+                left = traverse(False, node.left, steps + 1) 
+                right = traverse(True, node.right, 0)
+                return max(left, right)
+            else:
+                left = traverse(False, node.left, 0) 
+                right = traverse(True, node.right, steps + 1) 
+                return max(left, right)
+                
+        return max(traverse(False, root.left, 0), 
+                   traverse(True, root.right, 0)) 
