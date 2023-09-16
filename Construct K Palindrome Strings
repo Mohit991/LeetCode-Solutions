@@ -1,0 +1,48 @@
+# Let me explain how I approached the problem and came up with the same solution. I hope it will help you guys.
+
+# k, s.size() are relatively large - 10^5, so no backtracking, brute-force is applicable.
+# It's either dynamic programming or pure array logic - I started with pure array logic and it worked.
+# Then you should focus on test examples - they already contain some hints.
+
+# We need to use all the characters to build k palindromes.
+
+# k == s.size(), we can just take each character as a palindrome and we are done.
+# k > s.size(), there is no way we can form k palindromes in this case.
+# 1 <= k < s.size()
+# We need to combine some characters into groups since k < s.size(), but where does the problem come from? Why can't we build k palindromes for each string?
+# First point:
+# Supposing we have some intermediate palindromes and need to add characters with the even number to them.
+# In such a case, we can simply take groups of distinct characters and add them equally to the front, back sides of any palindrome, and it remains one.
+# Hereby, there is no problem with characters with the even frequency.
+
+# Second point:
+# Find the example with the problem - I wrote s = "dog" and k = 2.
+# {'d': 1, 'o':1, 'g': 1}, so now it's clear that we have to resolve grouping issues with the odd characters.
+
+# Third point:
+# Try to take different examples with odd character frequencies and see how it affects the result.
+# The thing is: if the string contains the odd number of some character, then it should be in the middle of some palindrome, and we can't put two groups of odd-characters in the same palindrome string, since we have only one middle point.
+
+# Fourth point:
+# All is ready at this point - let's sum up: one needs to place odd characters as the roots of palindromes and then put remaining even chars around them.
+# If k < odds groups, we can't build the palindromes. Otherwise, we can.
+
+class Solution:
+    def canConstruct(self, s: str, k: int) -> bool:
+        if k > len(s):
+            return False
+        
+        freq = [0]*26
+        for char in s:
+            freq[ord(char)-ord('a')] += 1
+        
+        oddCharCount = 0
+        for f in freq:
+            if f%2 != 0:
+                oddCharCount += 1
+                
+        if oddCharCount > k:
+            return False
+        return True
+        
+        
