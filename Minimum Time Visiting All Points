@@ -1,0 +1,32 @@
+class Solution:
+    def minTimeToVisitAllPoints(self, points: List[List[int]]) -> int:
+        time = 0
+        for i in range(len(points)-1):
+            a, b = points[i], points[i+1]
+            xDistance, yDistance = abs(a[0]-b[0]),  abs(a[1]-b[1])
+            
+            #Observation 1:
+            #If current and next points have x or y coordinate same
+            #then we have to move vertically or horizontally and reach
+            #the next point. 
+            #Move vertically if x coordinate is same
+            #Move horizontally if y coordinate is same
+            if xDistance == 0 or yDistance == 0:
+                if xDistance == 0:
+                    time += yDistance
+                else:
+                    time += xDistance
+                continue
+             
+            #Observation 2:
+            #If no coordinate of current and next point are same then
+            #We will have to move diagonally until we get to a point 
+            #where x or y coordinate macthes with the next point. So,
+            #We will travel the minimum distance diagonally    
+            minDistance = min(xDistance, yDistance)
+            time += minDistance
+            
+            #Once we have travelled the minimum distance
+            #We can use observation 1 and move accordingly. 
+            time += max(xDistance, yDistance) - minDistance
+        return time
