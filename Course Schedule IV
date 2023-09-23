@@ -1,0 +1,79 @@
+class Solution:
+    def checkIfPrerequisite(self, numCourses: int, prerequisites: List[List[int]], queries: List[List[int]]) -> List[bool]:
+        graph = defaultdict(list)
+        for prerequisite, course in prerequisites:
+            graph[course].append(prerequisite)
+        
+        def dfs(course, target):
+            if course == target:
+                return True
+            
+            for prerequisite in graph[course]:
+                if dfs(prerequisite, target):
+                    return True
+            return False
+        
+        res = []
+        for target, course in queries:
+            res.append(dfs(course, target))
+        return res   
+    
+############################################################
+
+class Solution:
+    def checkIfPrerequisite(self, numCourses: int, prerequisites: List[List[int]], queries: List[List[int]]) -> List[bool]:
+        
+        graph = defaultdict(list)
+        for prerequisite, course in prerequisites:
+            graph[course].append(prerequisite)
+        
+        
+        def dfs(course):
+            if course not in dependencySet: #Course direct and indrect dependencies are not yet calculated.
+                dependencySet[course] = set() #put empty set first
+                for prerequisite in graph[course]:
+                    dependencySet[course] |= dfs(prerequisite)
+                    #This |= is union of two sets in python.
+                dependencySet[course].add(course) #add itself to its dependency
+            return dependencySet[course] #Return all the calculated dependencies.
+        
+        dependencySet = {}
+        #Calculate the dependecies(direct and indirect) for all the courses. 
+        for course in range(numCourses):
+            dfs(course)
+        
+        res = []
+        #Put true for the query of target can be found in dependencies of couse
+        for target, course in queries:
+            res.append(target in dependencySet[course])
+        return res
+                
+            
+############################################################
+
+# This problem is to check if 2 vertices are connected in directed graph.
+# Floyd-Warshall O(n^3) is an algorithm that will output the minium distance of any vertices. We can modified it to output if any vertices is connected or not.
+# Complexity:
+# Time: O(n^3)
+# Space: O(n^2)
+
+class Solution:
+    def checkIfPrerequisite(self, numCourses: int, prerequisites: List[List[int]], queries: List[List[int]]) -> List[bool]:
+        
+        graph = [[False] * numCourses for _ in range(numCourses)]
+        for prerequisite, course in prerequisites:
+            graph[course][prerequisite] = True
+        
+        for k in range(numCourses):
+            for i in range(numCourses):
+                for j in range(numCourses):
+                    graph[i][j] = graph[i][j] or (graph[i][k] and graph[k][j])
+        
+        res = []
+        for target, course in queries:
+            res.append(graph[course][target])
+        return res
+
+        
+        
+                            
