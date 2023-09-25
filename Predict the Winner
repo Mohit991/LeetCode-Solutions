@@ -1,0 +1,83 @@
+# Let's build the search tree first, take nums = [3, 2, 4] for example,
+
+#  [3,2,4]
+#    3/\4---------- 1st player's decision
+# [2,4] [3,2]
+# 2/ \4  3/ \2----- 2nd player's decision
+# [4][2] [2][3]
+
+# currently 1st with choosable i, j,
+#1.if 1st picks nums[i], 2nd can pick either ends of nums[i + 1, j]
+ #a.if 2nd picks nums[i + 1], 1st can pick either ends of nums[i + 2, j]
+ #b.if 2nd picks nums[j], 1st can pick either ends of nums[i + 1, j - 1]
+ #since 2nd plays to maximize his score, 1st can get nums[i] + min(1.a, 1.b)
+ #We take  min(1.a, 1.b) because second player also plays his best and takes max(1.a, 1.b)
+ #And we are left with  min(1.a, 1.b)
+
+#2.if 1st picks nums[j], 2nd can pick either ends of nums[i, j - 1]
+ #a.if 2nd picks nums[i], 1st can pick either ends of nums[i + 1, j - 1];
+ #b.if 2nd picks nums[j - 1], 1st can pick either ends of nums[i, j - 2];
+ #since 2nd plays to maximize his score, 1st can get nums[j] + min(2.a, 2.b)
+        
+#since the 1st plays to maximize his score, 1st can get max(nums[i] + min(1.a, 1.b), nums[j] + min(2.a, 2.b));
+
+# TC with memoization = O(2^n)
+# After memoization = O(n^2), SC: O(n)
+
+class Solution:
+    def predictTheWinner(self, nums: List[int]) -> bool:
+        memo = {}
+        def scoring(left, right):
+            if (left, right) in memo:
+                return memo[left, right]
+            
+            if left > right:
+                return 0
+            pickLeft = nums[left] + min(scoring(left+2, right), scoring(left+1, right-1))
+            pickRight = nums[right] + min(scoring(left+1, right-1), scoring(left, right-2))
+            memo[left, right] = max(pickLeft, pickRight)
+            return memo[left, right]
+        
+        player1Score = scoring(0, len(nums)-1)
+        totalScore = sum(nums)
+        player2Score = totalScore - player1Score
+        
+        if player1Score >= player2Score:
+            return True
+        return False
+    
+#########################################################
+
+#Another approch:
+# If you pick the ith then you score = nums[i]
+# Opponents score = scoring(i+1, j)
+# because opponent now has the next move
+# Your gain = nums[i] - scoring(i+1, j)
+# Since we are only going to calculate if p1 can get a +ve score,
+# if it can then he can win. 
+
+# If you pick the jth then you score = nums[j]
+# Opponents score = scoring(i, j-1)
+# because opponent now has the next move
+# Your gain = nums[j] - scoring(i, j-1)
+# Since we are only going to calculate if p1 can get a +ve score,
+# if it can then he can win. 
+
+# We return the max we can get by picking ith or jth. 
+
+class Solution:
+    def predictTheWinner(self, nums: List[int]) -> bool:
+        memo = {}
+        def scoring(i, j):
+            if (i, j) in memo:
+                return memo[(i, j)]
+            if i > j:
+                return 0
+            pickI = nums[i] - scoring(i+1, j)
+            pickJ = nums[j] - scoring(i, j-1)
+            memo[(i, j)] = max(pickI, pickJ)
+            return memo[(i, j)]
+        return True if scoring(0, len(nums)-1) >= 0 else False
+
+
+
