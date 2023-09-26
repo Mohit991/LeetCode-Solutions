@@ -1,0 +1,37 @@
+# The idea of minimax :
+
+# If am the player 1 (whose winning sum we are trying to calculate), then I recurse on all possibilities and get the max.
+# If am the player 2 (the opponent), then I try to minimize what P1 gets, and since we are not interested in what score P2 gets, we only calculate the min(all P1 next moves) and dont include the score P2 gets.
+
+# if player == 1st player,
+# gain = first x piles + minimax(..., 2nd player), where the gain is maximized
+# if player == 2nd player,
+# gain = 0 + minimax(..., 1st player), where the gain is minimized because the 2nd player tries to maximize his**
+
+# I believe it is O(n^3). We have minimax(st, m, player) where st is in order of n and m is in order of n. So thats n^2 calls we are looking at.
+# For each of those n^2 calls, we have a for loop that ranges overs m and since m is bounded by n. The inside for loop is again O(n)
+# So its O(n^3) . Not sure if we can bound it lower than this.
+
+class Solution:
+    def stoneGameII(self, piles: List[int]) -> int:
+        dp = {}
+        def score(aliceTurn, i, M):
+            if i >= len(piles):
+                return 0
+            if (aliceTurn, i, M) in dp:
+                return dp[(aliceTurn, i, M)]
+            
+            if aliceTurn:
+                res = 0
+                for x in range(1, 2*M + 1):
+                    res = max(res, sum(piles[i: i+x]) + score(False, i+x, max(x, M)))
+                dp[(aliceTurn, i, M)] = res
+                return dp[(aliceTurn, i, M)] 
+            else:
+                res = inf
+                for x in range(1, 2*M + 1):
+                    res = min(res, score(True, i+x, max(x, M)))   
+                dp[(aliceTurn, i, M)] = res
+                return dp[(aliceTurn, i, M)] 
+        return score(True, 0, 1)
+        
