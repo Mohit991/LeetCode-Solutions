@@ -77,3 +77,28 @@ class Solution:
             return memo[(i, j)]
         
         return scoring(0, len(piles)-1)
+
+###################################################
+class Solution:
+    def stoneGame(self, piles: List[int]) -> bool:
+        dp = {}
+        def scoring(aliceTurn, i, j):
+            if i > j:
+                return 0
+            if (i, j) in dp:
+                return dp[(i, j)]
+            
+            pickIth, pickJth = 0, 0
+            if aliceTurn:
+                pickIth = piles[i] + scoring(False, i+1, j)
+                pickJth = piles[j] + scoring(False, i, j-1)
+            else: 
+                #This is bob's turn, so you cant add ith or jth item to your score
+                pickIth = scoring(True, i+1, j)
+                pickJth = scoring(True, i, j-1)
+            dp[(i, j)] = max(pickIth, pickJth)
+            return dp[(i, j)]
+        
+        aliceScore = scoring(True, 0, len(piles)-1)
+        bobScore = sum(piles) - aliceScore
+        return True if aliceScore > bobScore else False
