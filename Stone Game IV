@@ -1,0 +1,34 @@
+# https://leetcode.com/problems/stone-game-iv/discuss/1708369/Easy-Explanation-you-will-definitely-gonna-understand
+
+class Solution:
+    def winnerSquareGame(self, n: int) -> bool:
+        dp = [False] * (n+1)
+        for num in range(1, len(dp)):
+            sqr = 1
+            while sqr*sqr <= num:
+                if dp[num - sqr*sqr] == False:
+                    dp[num] = True
+                sqr += 1
+        return dp[-1]
+    
+####################################################
+
+class Solution:
+    def winnerSquareGame(self, n: int) -> bool:
+        dp = {}
+        def findWinner(n):
+            if n == 0:
+                return False
+            if n in dp:
+                return dp[n]
+            sqr = 1
+            winner = False
+            while sqr*sqr <= n:
+                if not findWinner(n - sqr*sqr):
+                    winner = True
+                    break
+                sqr += 1
+            dp[n] = winner
+            return dp[n]
+        return findWinner(n)
+        
