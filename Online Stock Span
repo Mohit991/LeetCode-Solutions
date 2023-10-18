@@ -1,0 +1,39 @@
+class StockSpanner:
+    #We will create two lists:
+    #1. stockPrices: It will have the stock prices for previous days. 
+    #2. stockSpand: It will have the spans for the previous stocks. 
+    def __init__(self):
+        self.stockPrices = []
+        self.stockSpans = []
+
+    def next(self, price: int) -> int:
+        #If this is the first stock then append the price to stockPrices
+        #Append 1 to stockSpans and return 1 as the span. 
+        if not self.stockPrices:
+            self.stockPrices.append(price)
+            self.stockSpans.append(1)
+            return 1
+
+        #We start from the last stock(we have not added the current stock
+        #price yet).
+        #currentStockSpan = 1 because for every stock it is 1 at start. 
+        i = len(self.stockPrices)-1
+        currentStockSpan = 1
+
+        #If the last stock in the list is smaller than the current stock
+        # Then we will add its span to current stock span and do
+        #i -= self.stockSpans[i], with this we will jump from current 
+        #i to previous i which we will again check. 
+        while i >= 0:
+            if self.stockPrices[i] <= price:
+                currentStockSpan += self.stockSpans[i]
+                i -= self.stockSpans[i]
+            else:
+                break
+        self.stockPrices.append(price)
+        self.stockSpans.append(currentStockSpan)
+        return currentStockSpan
+
+# Your StockSpanner object will be instantiated and called as such:
+# obj = StockSpanner()
+# param_1 = obj.next(price)
