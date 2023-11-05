@@ -1,0 +1,19 @@
+
+select U.name, sum(T.amount) as Balance from Users U
+inner join Transactions T
+on U.account = T.account
+group by U.name
+having sum(T.amount) > 10000
+
+select U.name, X.Balance from
+(select sum(amount) as Balance, account from Transactions
+group by account
+having sum(amount) > 10000) as X
+inner join Users U on X.account = U.account
+
+select U.name, sum(T.amount) as Balance from Users U
+inner join Transactions T
+on U.account = T.account
+group by T.account, U.name
+having sum(T.amount) > 10000
+
