@@ -1,0 +1,19 @@
+class Solution:
+    def bitwiseComplement(self, n: int) -> int:
+        if n == 0:
+            return 1
+        
+        complement = 0
+        powerOfTwo = 0
+        while n > 0:
+            if n%2 == 0: #we will take the bit of the complement
+                bit = 1
+            else:
+                bit = 0
+            
+            if bit == 1:
+                complement += 2**powerOfTwo
+            
+            powerOfTwo += 1
+            n = n >> 1
+        return complement
