@@ -1,0 +1,25 @@
+--The only problem we face is how to return NULL in case of no ans
+--For that we use the out query. If the inner query returns
+--and empty column then the outer return NULL else the outer returns
+--the value that inner query returns. 
+
+select(
+select top 1 from mynumbers
+group by num     
+having count(num) = 1
+order by num desc
+) as num
+
+-- use COALESCE 
+-- Evaluates the arguments in order and returns the current value of 
+-- the first expression that initially doesn't evaluate to NULL. 
+-- For example, SELECT COALESCE(NULL, NULL, 'third_value', 
+-- 'fourth_value'); returns the third value because the 
+-- third value is the first value that isn't null.
+
+select coalesce(
+    (select top 1 num from mynumbers
+    group by num
+    having count(num) = 1
+    order by num desc), NULL
+) as num
