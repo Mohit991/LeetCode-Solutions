@@ -1,0 +1,63 @@
+# [s1, e1] : Range of new slot to be booked
+# [s2, e2] : Range of previously booked slots
+# There are many possible combinations in which a range [s1,e1] can intersect
+# with [s2, e2]. Instead of thinking about all those ways, 
+# let's just think about the cases where the ranges won't intersect.
+# There are only two possible cases -
+# 1. s2 >= e1
+# 2. s1 >= e2	   
+
+
+# Time Complexity : O(N), where N are the number of already booked slots. 
+# Each call to book() will iterate through all the booked slots in 
+# the worst case and then insert the new slot bookings.
+# Space Complexity : O(N), for maintaining all the booked slots.
+    
+class MyCalendar:
+
+    def __init__(self):
+        self.bookings = []
+
+    def book(self, start: int, end: int) -> bool:
+        for booking in self.bookings:
+            #Below are cases which mean an overlap. 
+            # if booking[0] <= start < booking[1] or booking[0] < end <= booking[1] or (start < booking[0] and end > booking[1]):
+            #     return False
+            if not (start >= booking[1] or end <= booking[0]): 
+                return False
+        self.bookings.append([start, end])
+        return True
+
+#####################################################
+
+# We will have a map named bookings. This map will contain start and end
+# times of events. We will put +1 for start and -1 for end. 
+# When we have a new event, first we will add start and end of that in the map. 
+# so will go through the map in sorted fasion.
+# Clashes will tell us how many events are occuring at the same time. 
+# When we hit a start for a an event clashes will increase by one and if 
+# an event ends, we will get -1 and we will have once less clash. 
+# Since we dont want any clashes, as soon as the clashes become 2, we will 
+# know that we need to stop and return false.
+# Note: This method can work tripple booking or any amount of parallel 
+# bookings that we want. 
+
+# class MyCalendar:
+
+    def __init__(self):
+        self.bookings = {}
+
+    def book(self, start: int, end: int) -> bool:
+        self.bookings[start] = self.bookings.get(start, 0) + 1
+        self.bookings[end] = self.bookings.get(end, 0) - 1
+        
+        clashes = 0
+        for time in sorted(self.bookings.keys()):
+            clashes += self.bookings[time]
+            if clashes == 2:
+                self.bookings[start] = self.bookings[start] - 1
+                self.bookings[end] = self.bookings[end] + 1
+                return False
+        return True
+
+
