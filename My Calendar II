@@ -1,0 +1,58 @@
+# We will have a map named bookings. This map will contain start and end
+# times of events. We will put +1 for start and -1 for end. 
+# When we have a new event, first we will add start and end of that in the map. 
+# so will go through the map in sorted fasion.
+# Clashes will tell us how many events are occuring at the same time. 
+# When we hit a start for a an event clashes will increase by one and if 
+# an event ends, we will get -1 and we will have once less clash. 
+# Since we dont want any tripple bookings, as soon as the clashes become 3,
+# we will know that we need to stop and return false.
+# Note: This method can work tripple booking or any amount of parallel 
+# bookings that we want. 
+
+class MyCalendarTwo:
+    def __init__(self):
+        self.bookings = {}  # key: time; val: +1 if start, -1 if end
+
+    def book(self, start, end):
+        self.bookings[start] = self.bookings.get(start, 0) + 1
+        self.bookings[end] = self.bookings.get(end, 0) - 1
+        
+        parallelBooking = 0
+        for time in sorted(self.bookings.keys()):
+            parallelBooking += self.bookings[time]
+            if parallelBooking == 3:
+                self.bookings[start] -= 1
+                self.bookings[end] += 1
+                return False
+        return True
+    
+########################################################################
+
+# We will have two lists. One will have the all of the bookings and 
+# the other one will have the timings(start and end), where we are seeing
+# double bookings. When we get a new booking, we will first check in the
+# double bookings if it clashes with any of the timings where we already 
+# have double booking, if so, we return false. 
+# If not we will go throgh all the bookings and find the timings which clash
+# and add them to double booking. 
+
+class MyCalendarTwo:
+    def __init__(self):
+        self.bookings = []
+        self.doubleBookings = []
+        
+    def book(self, start, end):
+        for booking in self.doubleBookings:
+            if booking[0] <= start < booking[1] or booking[0] < end <= booking[1] or (start < booking[0] and end > booking[1]):
+                return False
+            
+        for booking in self.bookings:
+            if booking[0] <= start < booking[1] or booking[0] < end <= booking[1] or (start < booking[0] and end > booking[1]):
+                doubleBookingStart = max(start, booking[0])
+                doubleBookingEnd = min(end, booking[1])
+                self.doubleBookings.append([doubleBookingStart, doubleBookingEnd])
+        self.bookings.append([start, end])
+        return True
+                
+                
