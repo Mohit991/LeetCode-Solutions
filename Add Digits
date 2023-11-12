@@ -1,0 +1,40 @@
+class Solution:
+    def addDigits(self, num: int) -> int:
+        strOfNum = '  '
+        while len(strOfNum) != 1:
+            strOfNum = str(num)
+            sum = 0
+            for num in strOfNum:
+                sum += int(num)
+            num = sum 
+        return int(num)
+    
+class Solution:
+    def addDigits(self, num: int) -> int:
+        sumMap = {10: 1, 11: 2, 12: 3, 13: 4, 14: 5, 15: 6, 16: 7, 17: 8, 18: 9}
+        
+        strOfNum = str(num)
+        sum = 0
+        
+        for digit in strOfNum:
+            digit = int(digit)
+            sum += digit
+            if sum in sumMap:
+                sum = sumMap[sum]
+        
+        return sum
+    
+class Solution:
+    def addDigits(self, num: int) -> int:
+        strOfNum = str(num)
+        sum = 0
+        for digit in strOfNum:
+            digit = int(digit)
+            sum += digit
+            if sum > 9:
+                sum = sum % 9
+                if sum == 0:
+                    sum = 9
+        return sum
+        
+        
