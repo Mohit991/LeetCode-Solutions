@@ -1,0 +1,74 @@
+# We first record the frequency of each digit in digitFreq list.
+# Now we go through each digit of the number and replace it with the max
+# number we have of the same parity in digitFreq. Don't forget to decrease
+# the freq once you reaplce. 
+# TC: 5 * O(n), because we have to go through a list of 5(out of 10, 5 are 
+# same parity) 
+
+class Solution:
+    def largestInteger(self, num: int) -> int:
+        digitFreq = [0] * 10 #Lets record the frequency of each digit. 
+        
+        for digit in str(num): #We record here
+            digit = int(digit)
+            digitFreq[digit] += 1
+            
+        maxNum = '' #max number will be a string, we will later convert to int
+        for digit in str(num):
+            digit = int(digit)
+            
+            #If digit is even, we will put the max even number here
+            if digit%2 == 0:
+                for i in range(8, -1, -2):
+                    if digitFreq[i] > 0:
+                        maxNum += str(i)
+                        digitFreq[i] -= 1
+                        break
+            
+            #If digit is odd, we will put the max odd number here. 
+            else:
+                for i in range(9, 0, -2):
+                    if digitFreq[i] > 0:
+                        maxNum += str(i)
+                        digitFreq[i] -= 1
+                        break
+        return int(maxNum)
+
+# Instead of using a list and going to a list of 10 each time, we can build a 
+# max heap and go though that. 
+# We go though the nums and for every num we replace it with the max number
+# of the same parity. If there is no digit with that parity dont keep the 
+# current number. 
+# TC: O(n Logn)
+
+class Solution:
+    def largestInteger(self, num: int) -> int:
+        oddNumberHeap = []
+        evenNumberHeap = []
+        
+        for digit in str(num): #Push onto heaps
+            digit = int(digit)
+            if digit%2 == 0:
+                heappush(evenNumberHeap, -digit)
+            else:
+                heappush(oddNumberHeap, -digit)
+            
+        maxNum = '' #max number will be a string, we will later convert to int
+        for digit in str(num):
+            digit = int(digit)
+            
+            #If digit is even, we will put the max even number here
+            if digit%2 == 0 and evenNumberHeap:
+                maxEvenNum = -heappop(evenNumberHeap)
+                maxNum += str(maxEvenNum)
+            
+            #If digit is odd, we will put the max odd number here. 
+            elif digit%2 == 1 and oddNumberHeap:
+                maxEvenNum = -heappop(oddNumberHeap)
+                maxNum += str(maxEvenNum)
+            
+            #If parity not found, we keep the same number
+            else:
+                maxNum += str(digit)
+                
+        return int(maxNum)
