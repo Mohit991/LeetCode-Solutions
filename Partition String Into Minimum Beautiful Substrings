@@ -1,0 +1,109 @@
+class Solution:
+    def binaryToDecimal(self, s):
+        power = 0
+        value = 0
+        for i in range(len(s)-1, -1, -1):
+            if s[i] == '1':
+                value += 2**power
+            power += 1
+        return value
+    
+    def isPowerOfFive(self, s):
+        value = int(s, 2)
+        x = 5
+        power = 0
+        while x**power <= value:
+            if x**power == value:
+                return True
+            power += 1
+        return False
+    
+    def minimumBeautifulSubstrings(self, s: str) -> int:
+        def partition(s, pCount):
+            if not s:
+                return pCount
+            c = inf
+            for i in range(len(s)):
+                if s[0:i+1][0] != '0' and self.isPowerOfFive(s[0:i+1]):
+                    c = min(c, partition(s[i+1:], pCount+1))
+            return c
+        
+        ans = partition(s, 0)
+        return ans if ans != inf else -1
+    
+#####################################################################
+
+class Solution:
+    def binaryToDecimal(self, s):
+        power = 0
+        value = 0
+        for i in range(len(s)-1, -1, -1):
+            if s[i] == '1':
+                value += 2**power
+            power += 1
+        return value
+    
+    def isPowerOfFive(self, s):
+        # value = int(s, 2)
+        value = self.binaryToDecimal(s)
+        x = 5
+        power = 0
+        while x**power <= value:
+            if x**power == value:
+                return True
+            power += 1
+        return False
+    
+    def minimumBeautifulSubstrings(self, s: str) -> int:
+        def partition(index, pCount):
+            if index >= len(s):
+                return pCount
+            c = inf
+            for i in range(index, len(s)):
+                if s[index:i+1][0] != '0' and self.isPowerOfFive(s[index:i+1]):
+                    c = min(c, partition(i+1, pCount+1))
+            return c
+        
+        ans = partition(0, 0)
+        return ans if ans != inf else -1
+    
+#####################################################################
+
+class Solution:
+    def binaryToDecimal(self, s):
+        power = 0
+        value = 0
+        for i in range(len(s)-1, -1, -1):
+            if s[i] == '1':
+                value += 2**power
+            power += 1
+        return value
+    
+    def isPowerOfFive(self, s):
+        # value = int(s, 2)
+        value = self.binaryToDecimal(s)
+        x = 5
+        power = 0
+        while x**power <= value:
+            if x**power == value:
+                return True
+            power += 1
+        return False
+    
+    def minimumBeautifulSubstrings(self, s: str) -> int:
+        memo = [0] + [inf]*len(s)
+        
+        for i in range(1, len(memo)):
+            for j in range(i):
+                if memo[j] != inf and s[j] != '0':
+                    if self.isPowerOfFive(s[j:i]):
+                        memo[i] = min(memo[i], memo[j]+1)
+        return memo[-1] if memo[-1] != inf else -1
+        
+        
+
+            
+
+
+        
+        
