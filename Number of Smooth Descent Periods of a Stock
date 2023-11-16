@@ -1,0 +1,36 @@
+class Solution:
+    def getDescentPeriods(self, prices: List[int]) -> int:
+        i, j = 0, 1
+        count = 1
+        while j < len(prices):   
+            if prices[j] == prices[j-1] - 1:
+                count += j-i+1
+            else:
+                count += 1
+                i = j
+            j += 1
+        return count
+    
+# dp[i] is defined as the number of smooth descent periods ended at i.
+# obviously dp[0] = 1
+# if prices[i]== prices[i - 1] then dp[i] = dp[i - 1] + 1 else dp[i] = 1
+# for example: prices = [3, 2, 1, 4]
+# dp[0] = 1, [3] is a smooth descent period
+# dp[1] = 2, because 2 == 3 - 1, that is [2], [3, 2] are smooth descent periods
+# dp[2] = 3, because 1 == 2 - 1, that is [1], [2, 1], [3, 2, 1]are smooth descent periods
+# dp[3] = 1, because 4 != 1 - 0, that is only [4] is a smooth descent period
+# Note that the end of smooth descent periods are all marked in bold.
+# so the return value is sum(dp) = 7, because the answer needs the total count of smooth descent periods ended at any index of prices.
+# Furthmore since dp[i] is only dependent on dp[i - 1], 
+# the Space Complexity can be reduced to O(1), and
+# we can redefine dp as the number of smooth descent periods 
+# ended at the previous index   
+
+
+class Solution:
+    def getDescentPeriods(self, prices):
+        dp = [1] * len(prices)
+        for i in range(1, len(prices)):
+            if prices[i] == prices[i - 1] - 1:
+                dp[i] += dp[i - 1]
+        return sum(dp)
