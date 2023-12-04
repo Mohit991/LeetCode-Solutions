@@ -1,0 +1,65 @@
+Let's use DP + Memoization
+This approch is easier to come up with in my opnion. But this is not the fastest approch and also takes a lot of memory.
+
+class Solution:
+    def numberOfWays(self, s: str) -> int:
+        memo = {}
+        def selectBuildings(prev, index, count):
+            if (prev, index, count) in memo:
+                return memo[(prev, index, count)]
+            if count == 3:
+                return 1
+            if index >= len(s):
+                return 0
+        
+            takeBuilding = 0
+            if s[index] != prev:
+                takeBuilding = selectBuildings(s[index], index+1, count+1)
+            dontTakeBuilding = selectBuildings(prev, index+1, count)
+            memo[(prev, index, count)] = takeBuilding + dontTakeBuilding
+            return takeBuilding + dontTakeBuilding
+        
+        return selectBuildings('', 0, 0)
+
+Let's try another approch:
+The possible sequences of selected buildings is either "101" or "010".
+
+If the current building is '0', then the number of sequences of pattern "101" will be the product of the number of occurances of building '1' before the current building to the number of occurances of building '1' after the current building and viceversa.
+
+class Solution:
+    def numberOfWays(self, s: str) -> int:
+        countOfOne, countOfZero = 0, 0
+        for char in s:
+            if char == '0':
+                countOfZero += 1
+            else:
+                countOfOne += 1
+        
+        totalInceptions = 0
+        countOfZeroSoFar, countOfOneSoFar = 0, 0
+        for char in s:
+            if char == '1':
+                totalInceptions += countOfZeroSoFar * (countOfZero - countOfZeroSoFar)
+                countOfOneSoFar += 1
+                
+            else:
+                totalInceptions += countOfOneSoFar * (countOfOne - countOfOneSoFar)
+                countOfZeroSoFar += 1
+Let's try DP in a different way.
+When you meet a "0", you can possibly form "0", "10", "010" ending with a "0".
+When you meet a "1", you can possibly form "1", "01", "101" ending with a "1".
+Update the number of possible combinations when you traverse s.
+
+class Solution:
+    def numberOfWays(self, s: str) -> int:
+        dp = {"0": 0, "10": 0, "010": 0, "1": 0, "01": 0, "101": 0}
+        for char in s:
+            if char == "0":
+                dp["0"] += 1
+                dp["10"] += dp["1"]
+                dp["010"] += dp["01"]
+            else:
+                dp["1"] += 1
+                dp["01"] += dp["0"]
+                dp["101"] += dp["10"]
+        return dp["101"] + dp["010"]
