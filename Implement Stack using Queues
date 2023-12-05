@@ -1,0 +1,63 @@
+class MyStack:
+
+    def __init__(self):
+        self.q1 = []
+        self.q2 = []
+
+    def push(self, x: int) -> None:
+        self.q1.append(x)
+
+    def pop(self) -> int:
+        if self.q1:
+            while len(self.q1) != 1:
+                self.q2.append(self.q1.pop(0))
+            return self.q1.pop(0)
+        else:
+            while len(self.q2) != 1:
+                self.q1.append(self.q2.pop(0))
+            return self.q2.pop(0)
+
+    def top(self) -> int:
+        if self.q1:
+            while len(self.q1) != 1:
+                self.q2.append(self.q1.pop(0))
+            x = self.q1.pop(0)
+            self.q2.append(x)
+            return x
+        else:
+            while len(self.q2) != 1:
+                self.q1.append(self.q2.pop(0))
+            x = self.q2.pop(0)
+            self.q1.append(x)
+            return x
+
+    def empty(self) -> bool:
+        if not self.q1 and not self.q2:
+            return True
+        return False
+
+#######################################################
+#Using only one queue
+
+class MyStack:
+
+    def __init__(self):
+        self.q = []
+
+    def push(self, x: int) -> None:
+        self.q.append(x)
+
+    def pop(self) -> int:
+        for i in range(len(self.q)-1):
+            self.q.append(self.q.pop(0))
+        return self.q.pop(0)
+
+    def top(self) -> int:
+        for i in range(len(self.q)-1):
+            self.q.append(self.q.pop(0))
+        x = self.q[0]
+        self.q.append(self.q.pop(0))
+        return x
+
+    def empty(self) -> bool:
+        return not self.q
