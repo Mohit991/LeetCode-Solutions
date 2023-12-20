@@ -1,0 +1,29 @@
+class Solution:
+    def buyChoco(self, prices: List[int], money: int) -> int:
+        firstMin, secondMin = inf, inf
+        for price in prices:
+            if price < firstMin:
+                secondMin = firstMin
+                firstMin = price
+            elif price < secondMin:
+                secondMin = price
+        leftOver = money - (firstMin + secondMin)
+        return leftOver if leftOver >= 0 else money
+    
+####################################################
+
+class Solution:
+    def buyChoco(self, prices: List[int], money: int) -> int:
+        firstMin, secondMin = inf, inf
+        firstMinIndex = -1
+        for index, price in enumerate(prices):
+            if price < firstMin:
+                firstMin = price
+                firstMinIndex = index
+        
+        for index, price in enumerate(prices):
+            if price < secondMin and index != firstMinIndex:
+                secondMin = price
+                
+        leftOver = money - (firstMin + secondMin)
+        return leftOver if leftOver >= 0 else money
