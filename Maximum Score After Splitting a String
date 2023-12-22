@@ -1,0 +1,19 @@
+class Solution:
+    def maxScore(self, s: str) -> int:
+        zerosToLeft, onesToRight = 0, 0
+        for bit in s:
+            if bit == '1':
+                onesToRight += 1
+        
+        maxScore = 0
+        for i in range(len(s)-1):
+            if s[i] == '0':
+                zerosToLeft += 1
+            else:
+                onesToRight -= 1
+            maxScore = max(maxScore, onesToRight + zerosToLeft)
+        
+        return maxScore
+        
+        
+            
