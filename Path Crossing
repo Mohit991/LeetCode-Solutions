@@ -1,0 +1,33 @@
+class Solution:
+    def isPathCrossing(self, path: str) -> bool:
+        visited = set()
+        position = [0, 0]
+        visited.add(tuple(position))
+        
+        for step in path:
+            if step == 'N':
+                position[1] = position[1] + 1
+                newPosition = tuple(position)
+                if newPosition in visited:
+                    return True
+                visited.add(newPosition)
+            elif step == 'S':
+                position[1] = position[1] - 1
+                newPosition = tuple(position)
+                if newPosition in visited:
+                    return True
+                visited.add(newPosition)
+            elif step == 'E':
+                position[0] = position[0] + 1
+                newPosition = tuple(position)
+                if newPosition in visited:
+                    return True
+                visited.add(newPosition)
+            else:
+                position[0] = position[0] - 1
+                newPosition = tuple(position)
+                if newPosition in visited:
+                    return True
+                visited.add(newPosition)
+        return False
+            
