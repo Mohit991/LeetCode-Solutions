@@ -1,0 +1,23 @@
+class Solution:
+    def makeEqual(self, words: List[str]) -> bool:
+        wordCount = len(words)
+        
+        #Optimization
+        totalCharCount = 0
+        for word in words:
+            totalCharCount += len(word)
+        if totalCharCount%wordCount != 0:
+            return False
+        
+        charCount = {}
+        for word in words:
+            for char in word:
+                if char not in charCount:
+                    charCount[char] = 1
+                else:
+                    charCount[char] += 1
+        
+        for char in charCount:
+            if charCount[char]%wordCount != 0:
+                return False
+        return True
