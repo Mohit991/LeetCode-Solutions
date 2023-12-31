@@ -1,0 +1,27 @@
+class Solution:
+    def maxLengthBetweenEqualCharacters(self, s: str) -> int:
+        longestLength = -1
+        
+        charIndex = {}
+        for index, char in enumerate(s):
+            if char in charIndex:
+                longestLength =  max(longestLength, index-charIndex[char]-1)
+            else:
+                charIndex[char] = index
+        
+        return longestLength
+    
+class Solution:
+    def maxLengthBetweenEqualCharacters(self, s: str) -> int:
+        longestLength = -1
+        charIndex = [-1]*26
+        
+        for index, char in enumerate(s):
+            if charIndex[ord(char)-ord('a')] != -1:
+                longestLength = max(longestLength, index-charIndex[ord(char)-ord('a')]-1)
+            else:
+                charIndex[ord(char)-ord('a')] = index
+                
+        return longestLength
+            
+        
