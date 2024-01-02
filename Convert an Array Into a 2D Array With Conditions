@@ -1,0 +1,46 @@
+class Solution:
+    def findMatrix(self, nums: List[int]) -> List[List[int]]:
+        frequencyMap = {}
+        for n in nums:
+            if n in frequencyMap:
+                frequencyMap[n] += 1
+            else:
+                frequencyMap[n] = 1
+        
+        result = []
+        count = 0
+        while count < len(nums):
+            currentRow = []
+            for n in frequencyMap:
+                if frequencyMap[n] > 0:
+                    currentRow.append(n)
+                    frequencyMap[n] -= 1
+                    count += 1
+            result.append(currentRow)
+        return result
+    
+##########################################################
+
+class Solution:
+    def findMatrix(self, nums: List[int]) -> List[List[int]]:
+        frequencyMap = {}
+        maxFrequency = 1
+        for n in nums:
+            if n in frequencyMap:
+                frequencyMap[n] += 1
+                maxFrequency = max(maxFrequency, frequencyMap[n])
+            else:
+                frequencyMap[n] = 1
+        
+        result = [[] for i in range(maxFrequency)]
+        count = 0
+        
+        for n in frequencyMap:
+            for i in range(frequencyMap[n]):
+                result[i].append(n)
+            
+        return result
+            
+        
+        
+        
