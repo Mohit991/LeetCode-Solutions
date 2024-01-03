@@ -1,0 +1,15 @@
+class Solution:
+    def numberOfBeams(self, bank: List[str]) -> int:
+        rows, cols = len(bank), len(bank[0])
+        beams = 0
+        
+        prevDevices = 0
+        for i in range(rows):
+            currRowDevices = 0
+            for j in range(cols):
+                if bank[i][j] == '1':
+                    currRowDevices += 1
+            if currRowDevices != 0:
+                beams += prevDevices * currRowDevices
+                prevDevices = currRowDevices   
+        return beams
