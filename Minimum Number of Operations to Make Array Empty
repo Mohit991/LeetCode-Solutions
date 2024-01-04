@@ -1,0 +1,22 @@
+class Solution:
+    def minOperations(self, nums: List[int]) -> int:
+        freq = {}
+        for n in nums:
+            if n in freq:
+                freq[n] += 1
+            else:
+                freq[n] = 1
+        
+        ops = 0
+        for val in freq:
+            if freq[val] == 1:
+                return -1
+            
+            if freq[val]%3 == 0:
+                ops += freq[val]//3
+            elif freq[val]%3 == 2:
+                ops += freq[val]//3 + 1
+            else:
+                ops += (freq[val]//3-1) + 2 #freq[val]//3-1 are 3's ops and +3 for 2's ops
+
+        return ops
