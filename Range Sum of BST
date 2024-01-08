@@ -1,0 +1,22 @@
+class Solution:
+    def rangeSumBST(self, root: Optional[TreeNode], low: int, high: int) -> int:
+        def traverse(root):
+            if not root:
+                return 0
+            if low <= root.val <= high:
+                return traverse(root.left) + traverse(root.right) + root.val
+            if root.val < low:
+                return traverse(root.right)
+            if root.val > high:
+                return traverse(root.left)
+        return traverse(root)
+    
+class Solution:
+    def rangeSumBST(self, root: Optional[TreeNode], low: int, high: int) -> int:
+        def traverse(root):
+            if not root: return 0
+            if root.val < low: return traverse(root.right)
+            if root.val > high: return traverse(root.left)
+            return traverse(root.left) + traverse(root.right) + root.val
+        
+        return traverse(root)
