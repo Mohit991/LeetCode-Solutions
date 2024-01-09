@@ -1,0 +1,18 @@
+class Solution:
+    def leafSimilar(self, root1: Optional[TreeNode], root2: Optional[TreeNode]) -> bool:
+        def getLeafSequence(root):
+            if not root:
+                return []
+            if not root.left and not root.right:
+                return [root.val]
+            return getLeafSequence(root.left) + getLeafSequence(root.right)
+        
+        root1List = getLeafSequence(root1)
+        root2List = getLeafSequence(root2)
+        
+        if len(root1List) != len(root2List): return False
+        
+        for i in range(len(root1List)):
+            if root1List[i] != root2List[i]:
+                return False
+        return True
