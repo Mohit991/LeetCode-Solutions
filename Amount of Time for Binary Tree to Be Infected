@@ -1,0 +1,40 @@
+class Solution:
+    def amountOfTime(self, root: Optional[TreeNode], start: int) -> int:
+        graph = defaultdict(list)
+        def inorder(root, parent):
+            if not root: return 
+            
+            if parent: #Parent is also a neighbour. So, adding parent to node neighbours
+                graph[root.val].append(parent.val)
+            if root.left: #Adding left to node's neighbours
+                graph[root.val].append(root.left.val)
+            if root.right: #Adding right to node's neighbours
+                graph[root.val].append(root.right.val)
+            
+            inorder(root.left, root)
+            inorder(root.right, root)
+            return
+        
+        inorder(root, None) #Creating adj list graph from tree using inorder traversal.
+        
+        #Using BSF to find the number of levels starting from start.
+        #No of levels is the number of minutes needed to infect the whole tree.
+        minutes = 0
+        q = [start]
+        visited = set()
+        while q:
+            lenQ = len(q)
+            for i in range(lenQ):
+                node = q.pop(0)
+                visited.add(node)
+                for nei in graph[node]:
+                    if nei in visited:
+                        continue
+                    q.append(nei)
+            minutes += 1
+        
+        return minutes-1
+                
+                
+                
+        
