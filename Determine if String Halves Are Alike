@@ -1,0 +1,15 @@
+class Solution:
+    def halvesAreAlike(self, s: str) -> bool:
+        firstHalf, secondHalf = 0, len(s)//2
+        firstHalfVowels, secondHalfVowels = 0, 0
+        vowelSet = set('aeiouAEIOU')
+        
+        while secondHalf < len(s):
+            if s[firstHalf] in vowelSet:
+                firstHalfVowels += 1
+            if s[secondHalf] in vowelSet:
+                secondHalfVowels += 1
+            firstHalf += 1
+            secondHalf += 1
+            
+        return firstHalfVowels == secondHalfVowels
