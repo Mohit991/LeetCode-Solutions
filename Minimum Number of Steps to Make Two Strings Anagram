@@ -1,0 +1,25 @@
+We will calculate the frequency of each character in s using a map. Then we will use that map, and reduce the freq of each char which is already present in t. If we have a char in s and same char in t as well, then we don't need to replace it. For example, is s = "aba" and t = "bab". s has two a's and t has one a. We only need to replace a char for that second a. Hence, only one replace is needed for a. s has one b and t has two b's. We don't need to replace anything for b. 
+
+By the end of this process, we are left with only those chars in s, which we must replace. We find that count by summing up the frequncy of remained in the map. 
+We return that value. 
+
+```
+
+class Solution:
+    def minSteps(self, s: str, t: str) -> int:
+        letterFreq = {}
+        for char in s:
+            if char in letterFreq:
+                letterFreq[char] += 1
+            else:
+                letterFreq[char] = 1
+        
+        for char in t:
+            if char in letterFreq and letterFreq[char] > 0:
+                letterFreq[char] -= 1
+        
+        replaceCount = 0
+        for char in letterFreq:
+            replaceCount += letterFreq[char]
+        return replaceCount
+```
