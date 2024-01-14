@@ -1,0 +1,39 @@
+class Solution:
+    def closeStrings(self, word1: str, word2: str) -> bool:
+        if len(word1) != len(word2):
+            return False
+        
+        freqWord1 = {}
+        for char in word1:
+            if char in freqWord1:
+                freqWord1[char] += 1
+            else:
+                freqWord1[char] = 1
+                
+        freqWord2 = {}
+        for char in word2:
+            #We will check if this char is not in first word, if not, 
+            #it's not possible for these two words to be close. 
+            if char not in freqWord1: 
+                return False
+            if char in freqWord2:
+                freqWord2[char] += 1
+            else:
+                freqWord2[char] = 1
+        
+        freqMap = {}
+        for char in freqWord1:
+            if freqWord1[char] in freqMap:
+                freqMap[freqWord1[char]] += 1
+            else:
+                freqMap[freqWord1[char]] = 1
+                
+        for char in freqWord2:
+            if freqWord2[char] in freqMap and freqMap[freqWord2[char]] > 0:
+                freqMap[freqWord2[char]] -= 1
+            else:
+                return False
+            
+        return True
+        
+        
