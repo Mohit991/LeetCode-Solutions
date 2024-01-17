@@ -1,0 +1,15 @@
+class Solution:
+    def uniqueOccurrences(self, arr: List[int]) -> bool:
+        occurrences = {}
+        for n in arr:
+            if n in occurrences:
+                occurrences[n] += 1
+            else:
+                occurrences[n] = 1
+                
+        freq = set()
+        for n in occurrences:
+            if occurrences[n] in freq:
+                return False
+            freq.add(occurrences[n])
+        return True
