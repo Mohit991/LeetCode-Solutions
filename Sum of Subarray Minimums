@@ -1,0 +1,20 @@
+class Solution:
+    def sumSubarrayMins(self, arr: List[int]) -> int:
+        minSum = 0
+        
+        for i in range(len(arr)):
+            leftBiggerValues = 1
+            for j in range(i-1, -1, -1):
+                if arr[j] >= arr[i]:
+                    leftBiggerValues += 1
+                else: break
+                    
+            rightBiggerValues = 1
+            for j in range(i+1, len(arr)):
+                if arr[j] > arr[i]:
+                    rightBiggerValues += 1
+                else: break
+                    
+            minSum += (leftBiggerValues * rightBiggerValues)*arr[i]
+            
+        return minSum%(10**9+7)
