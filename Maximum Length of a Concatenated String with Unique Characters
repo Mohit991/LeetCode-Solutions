@@ -1,0 +1,87 @@
+First I tried to solve this using memoization. My code is working but exceeding the time limit. 
+```
+class Solution:
+    def maxLength(self, arr: List[str]) -> int:
+        def findMax(i, seen):
+            if i >= len(arr):
+                return 0
+            
+            canTake = True
+            take, dontTake = 0, 0
+            duplicatesInSelf = set()
+            for j in range(len(arr[i])):
+                if arr[i][j] in seen or arr[i][j] in duplicatesInSelf:
+                    canTake = False
+                    break
+                duplicatesInSelf.add(arr[i][j])
+                    
+            if canTake:
+                for j in range(len(arr[i])):
+                    seen.add(arr[i][j])
+                take = findMax(i+1, seen) + len(arr[i])
+                for j in range(len(arr[i])):
+                    if arr[i][j] in seen:
+                        seen.remove(arr[i][j])
+                dontTake = findMax(i+1, seen) + 0
+                
+            dontTake = findMax(i+1, seen) + 0
+            return max(take, dontTake)
+        
+        return findMax(0, set())
+```
+
+If anyone can provide DP/memoization for this code, that would be great. 
+
+For top down approch, I have created two helper functions. 
+**stringsHaveDuplicate**: Returns true is string only has unique character, false otherwise. 
+**stringsHaveDuplicate**: Returns true if two string do not have any characters in common, false otherwise.
+
+To help us with DP, we create a list called memo. This list will contain all the string, we have seen so far having only unique characters. These strings will be combination of strings from the list arr. 
+
+We will go through each string in arr. First we check if the current string contains duplicate or not, if yes we skip this string. 
+Now, we take this string and interate through all the string in memo. We check if the string in memo has duplicates with the current string from arr. We do this using stringsHaveDuplicate method. If this function returns true, we add these two strings together and append them to memo. We continue to do this we every string in list arr. 
+
+At the same time, we keep track of the length of the biggest string in memo using a vairable maxLength. 
+
+At the end, we return maxLength.
+
+```
+class Solution:
+    def stringHasDuplicate(self, s):
+        seen = set()
+        for char in s:
+            if char in seen:
+                return False
+            seen.add(char)
+        return True
+    
+    def stringsHaveDuplicate(self, s1, s2):
+        seen = set()
+        for char in s1:
+            seen.add(char)
+        for char in s2:
+            if char in seen:
+                return False
+            seen.add(char)
+        return True
+    
+    def maxLength(self, arr: List[str]) -> int:
+        memo = ['']
+        maxLength = 0
+        for i in range(len(arr)):
+            if self.stringHasDuplicate(arr[i]):
+                for string in memo:
+                    if self.stringsHaveDuplicate(arr[i], string):
+                        memo.append(arr[i]+string)
+                        maxLength = max(maxLength, len(memo[-1]))
+        
+        #We can also find maxLength here for better readability.
+        # maxLength = 0
+        # for string in memo:
+        #     maxLength = max(maxLength, len(string))
+        
+        return maxLength
+```
+
+
+Let me know if you have suggestions/doubts. Thanks!
