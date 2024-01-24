@@ -1,0 +1,44 @@
+We will use a **dictionary** to keep track of the frequency of each number we see while traversing the tree. 
+
+Steps -
+- Traverse the tree. 
+- Keep the frequency of each number you see in the dictionary **memo**.
+- When you reach a leaf node call **isPalindromic**. This function returns true if current key/values in the memo can make a palindrome, false otherwise. 
+
+**Note: We can make palindrome out of given values if either, all the values occure even number of times or atmost one value occures odd number of times and rest occure even number of times.**
+
+```
+class Solution:
+    def pseudoPalindromicPaths (self, root: Optional[TreeNode]) -> int:
+        memo = {}
+        def isPalindromic():
+            oddVal = False
+            for key in memo:
+                if memo[key]%2 != 0:
+                    if oddVal:
+                        return False
+                    oddVal = True
+            return True
+        
+        def traverse(root):
+            if not root:
+                return 0
+            
+            if root.val in memo:
+                memo[root.val] += 1
+            else:
+                memo[root.val] = 1
+                
+            if not root.left and not root.right:
+                if isPalindromic():
+                    memo[root.val] -= 1
+                    return 1
+                
+            left =  traverse(root.left) 
+            right = traverse(root.right)
+            memo[root.val] -= 1
+            return left + right
+        return traverse(root)
+```
+
+Let me know if you have any questions/suggestions.
