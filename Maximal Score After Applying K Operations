@@ -1,0 +1,14 @@
+class Solution:
+    def maxKelements(self, nums: List[int], k: int) -> int:
+        heap = []
+        for n in nums:
+            heappush(heap, -n)
+            
+        maxScore = 0
+        for i in range(k):
+            val = heappop(heap)
+            maxScore += -val
+            newVal = ceil(-val/3)
+            heappush(heap, -newVal)
+
+        return maxScore
