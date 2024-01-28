@@ -1,0 +1,28 @@
+class Solution:
+    def isNumPalindromic(self, num):
+        return str(num) == str(num)[::-1]
+    
+    def minimumCost(self, nums: List[int]) -> int:
+        nums.sort()
+        median = 0
+        if len(nums)%2 != 0:
+            median = nums[len(nums)//2]
+        else:
+            median = (nums[(len(nums)//2)-1]+nums[len(nums)//2]) // 2
+
+        closestPalindromeUpper = median
+        closestPalindromeLower = median
+        
+        while not self.isNumPalindromic(closestPalindromeUpper):
+            closestPalindromeUpper += 1
+            
+        while not self.isNumPalindromic(closestPalindromeLower):
+            closestPalindromeLower -= 1
+        
+        costWithUpper, costWithLower = 0, 0
+        for n in nums:
+            costWithUpper += abs(n-closestPalindromeUpper)
+            costWithLower += abs(n-closestPalindromeLower)
+        
+        return min(costWithUpper, costWithLower)
+        
