@@ -1,0 +1,41 @@
+# We can use a stack to solve this problem. We need to know when we get a bigger temperature
+# than today's temperature. The answer for all the days is initially 0.
+# As we go through the list we will push the current temperature onto the stack. 
+# We will check if the top value of the stack is greater than the current temperature that mrans
+# stack top is the next greater temperature. 
+# eg temperatures = [73,74,75,71,69,72,76,73], Stack = []
+# currentTemperature = 73, stack is empty so we do not enter the loop, hence stack = [[73, 0]]
+# currentTemperature = 74, 74 > 73 hence next bigger temp is 74, so ans[0] = 1 - 0 = 1
+# stack = [[74, 1]]
+# currentTemperature = 75, 75 > 74 hence next bigger temp is 75. so, ans[1] = 2 - 1 = 1
+# stack = [[75, 2]]
+# currentTemperature = 71, 71 > 75 not true hence just add to stack.
+# stack = [[75, 2], [71, 3]]
+# currentTemperature = 69, 69 > 71 not true hence just add to stack.
+# stack = [[75, 2], [71, 3], [69, 4]]
+# currentTemperature = 72, 72 > 69, hence next bigger temp is 72. hence ans[4] = 5-4 = 1
+# loop goes on and 72 > 71(stack top), so ans[3] = 5 - 3 = 2
+# loop goes on and 72 > 75(stack top), not true, hence push to stack. 
+# stack = [[75, 2], [72, 5]]
+# currentTemperature = 76, 76 > 72(stack top), ans[5] = 6 - 5 = 1
+# loop goes on and 76 > 75(stack top), so ans[2] = 6 - 2 = 4
+# stack empty hence push.  stack = [[76, 6]]
+# currentTemperature = 73, 73 > 76(stack top) is not true hence push.  stack = [[76, 6], [73, 7]]
+# Outer loop ends. ans = [1,1,4,2,1,1,0,0]
+
+
+
+
+class Solution:
+    def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
+        stack = []
+        ans = [0]*len(temperatures)
+        
+        for i in range(len(temperatures)):
+            currentTemperature = temperatures[i]
+            while stack and stack[-1][0] < currentTemperature:
+                index = stack.pop()[1]
+                ans[index] = i - index
+            stack.append([currentTemperature, i])
+        return ans
+        
