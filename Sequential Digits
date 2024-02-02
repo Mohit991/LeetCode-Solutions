@@ -1,0 +1,81 @@
+class Solution:
+    def generateFirstNum(self, noOfDigits):
+        firstNum = ''
+        for i in range(1, noOfDigits+1):
+            firstNum += str(i)
+        return firstNum
+    
+    def sequentialDigits(self, low: int, high: int) -> List[int]:
+        noOfDigits = len(str(low))
+        ans = []
+        startingNum = self.generateFirstNum(noOfDigits)
+        
+
+        while int(startingNum) <= high:
+            if low <= int(startingNum):
+                ans.append(int(startingNum))
+                
+            if startingNum[-1] == '9':
+                noOfDigits += 1
+                startingNum = self.generateFirstNum(noOfDigits)
+                if int(startingNum) <= high:
+                    ans.append(int(startingNum))
+                else:
+                    break
+                    
+            startingNum = startingNum[1:]
+            startingNum += str(int(startingNum[-1]) + 1)
+            
+        return ans
+    
+    
+class Solution:
+    def sequentialDigits(self, low: int, high: int) -> List[int]:
+        q = [1,2,3,4,5,6,7,8,9]
+        ans = []
+        while q:
+            val = q.pop(0)
+            if val >= low and val <= high:
+                ans.append(val)
+            remainder = val%10
+            if remainder != 9:
+                q.append(val*10 + remainder + 1)
+        return ans
+               
+# Iterate through starting digits from 1 to 9.
+# For each starting digit, build a sequential number by adding consecutive digits until reaching 9 or exceeding the high value.
+# Add valid sequential numbers to a vector (a).
+# Sort the vector.
+class Solution:
+    def sequentialDigits(self, low: int, high: int) -> List[int]:
+        i = 1
+        ans = []
+        while i < 9:
+            numStr = ''
+            for j in range(i, 10):
+                numStr += str(j)
+                num = int(numStr)
+                if num >= low and num <= high:
+                    ans.append(num)
+            i += 1
+        ans.sort()
+        return ans
+
+# digits from 1 to 9 are stored as characters in the string c = "123456789".
+# Two nested loops iterate over all possible substrings of c.
+# For each substring, convert it to an integer.
+# If the converted integer is within the given range, add it to the vector a.
+# Sort the vector.
+class Solution:
+    def sequentialDigits(self, low: int, high: int) -> List[int]:
+        sequentialString = '123456789'
+        ans = []
+        for i in range(len(sequentialString)):
+            for j in range(i+1, len(sequentialString)+1):
+                num = int(sequentialString[i:j])
+                if num >= low and num <= high:
+                    ans.append(num)
+        ans.sort()
+        return ans
+                
+            
