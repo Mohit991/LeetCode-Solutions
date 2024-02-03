@@ -1,0 +1,51 @@
+# To make the string balanced, we dont need B's before A's. 
+# If we see such scenario, we can detele all B's before current position and
+# all A's after current position.
+#At every index, we can delete all b's before this and all a's after this. 
+# This is the cost at the given index.
+# We find this cost at all the indexes.
+# We return the minimun cost.
+        
+class Solution:
+    def minimumDeletions(self, s: str) -> int:
+        BBefore, AAfter = [0]*len(s), [0]*len(s)
+        
+        for i in range(1, len(s)):
+            BBefore[i] = BBefore[i-1]
+            if s[i-1] == 'b':
+                BBefore[i] += 1
+                
+        for i in range(len(s)-2, -1, -1):
+            AAfter[i] = AAfter[i+1]
+            if s[i+1] == 'a':
+                AAfter[i] += 1        
+            
+        minDels = inf
+        for i in range(len(s)):
+            minDels = min(minDels, AAfter[i]+BBefore[i])
+        return minDels
+        
+
+
+# The problem can be formulated as DP.
+# At every point when you see 'a' , you have 2 options -->
+# Remove all the b's you found earlier. --> total cost = count_of_b
+# OR
+# Delete the current 'a'. --> total cost = cur_total_cost + 1 (deleting a)
+# If u see a 'b', then no more cost.
+# Thus maintain the count of 'b's you found.
+
+class Solution:
+    def minimumDeletions(self, s: str) -> int:
+        dp = [0]
+        countOfB = 0
+        for c in s:
+            if c == 'b':
+                countOfB += 1
+                dp.append(dp[-1])
+            else:
+                dp.append(min(dp[-1]+1, countOfB))
+        return dp[-1]
+
+            
+            
