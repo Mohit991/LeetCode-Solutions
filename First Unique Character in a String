@@ -1,0 +1,36 @@
+# Brute force solution, traverse string s 2 times. 
+# First time, store counts of every character into the hash table, 
+# second time, find the first character that appears only once.
+
+class Solution:
+    def firstUniqChar(self, s: str) -> int:
+        memo = {}
+        for char in s:
+            if char in memo:
+                memo[char] += 1
+            else:
+                memo[char] = 1
+        
+        for i in range(len(s)):
+            if memo[s[i]] == 1:
+                return i
+        return -1
+    
+# if the string is extremely long, we wouldn't want to traverse it twice,
+# so instead only storing just counts of a char, we also store the index, 
+# and then traverse the hash table.
+class Solution:
+    def firstUniqChar(self, s: str) -> int:
+        memo = defaultdict(list)
+        for i in range(len(s)):
+            char = s[i]
+            if char in memo:
+                memo[char][0] += 1
+            else:
+                memo[char].append(1)
+                memo[char].append(i)
+        
+        for char in memo:
+            if memo[char][0] == 1:
+                return memo[char][1]
+        return -1
