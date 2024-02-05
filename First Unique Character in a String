@@ -34,3 +34,28 @@ class Solution:
             if memo[char][0] == 1:
                 return memo[char][1]
         return -1
+
+# If the string is very long, it is a bad idea to traverse it twice.
+#So, we will only traverse it once. We use a dictionary called memo
+# to store the index of non-repeating character. 
+# We go through the string. If we have seen the char before, we put inf as index.
+# If we have not seen the char before we put its index as value in memo.
+# Now, after scanning the whole string, only non-repeating chars have their 
+# indexes stored in the memo. 
+# We go through the memo and find the minimum out of all these indexes. 
+
+class Solution:
+    def firstUniqChar(self, s: str) -> int:
+        memo = {}
+        for i in range(len(s)):
+            if s[i] in memo:
+                memo[s[i]] = inf
+            else:
+                memo[s[i]] = i
+        
+        minIndex = inf
+        for char in memo:
+            minIndex = min(minIndex, memo[char])
+        return minIndex if minIndex != inf else -1
+        
+        
