@@ -1,0 +1,45 @@
+class Solution:
+    def numSquares(self, n: int) -> int:
+        memo = {}
+        def findSum(i, currSum):
+            if currSum in memo:
+                return memo[currSum]
+            if currSum == 0:
+                return 0
+            if currSum < 0 or i*i > n:
+                return inf
+            
+            take = findSum(i, currSum-(i**2)) + 1
+            dontTake = findSum(i+1, currSum) + 0
+            memo[currSum] = min(take, dontTake)
+            return memo[currSum]
+        return findSum(1, n)
+            
+class Solution:
+    def numSquares(self, n: int) -> int:
+        memo = [inf]*(n+1)
+        memo[0] = 0
+        for i in range(1, len(memo)):
+            sqrtNum = i**0.5
+            if sqrtNum.is_integer():
+                memo[i] = 1
+                continue
+            for j in range(1, i//2 + 1):
+                k = i - j
+                memo[i] = min(memo[i], memo[j]+memo[k])
+        return memo[-1]
+    
+    
+class Solution:
+    def numSquares(self, n: int) -> int:
+        memo = [inf]*(n+1)
+        memo[0] = 0
+        for target in range(1, n+1):
+            for j in range(1, target+1):
+                square = j*j
+                if square > target:
+                    break
+                memo[target] = min(memo[target], 1+memo[target-square])
+        return memo[-1]
+    
+    
