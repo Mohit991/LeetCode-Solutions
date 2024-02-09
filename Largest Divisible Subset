@@ -1,3 +1,63 @@
+class Solution:
+    def largestDivisibleSubset(self, nums: List[int]) -> List[int]:
+        nums.sort()
+        self.maxSubset = []
+        def findDivisible(prev, i, path):
+            if i >= len(nums):
+                self.maxSubset = self.maxSubset if len(self.maxSubset) > len(path) else path
+                return 
+            if nums[i]%prev == 0 or prev == inf:
+                findDivisible(nums[i], i+1, path+[nums[i]])
+            findDivisible(prev, i+1, path)
+            return
+        
+        findDivisible(inf, 0, [])
+        return self.maxSubset
+        
+
+class Solution:
+    def largestDivisibleSubset(self, nums: List[int]) -> List[int]:
+        nums.sort()
+        def findDivisible(prev, i):
+            if i >= len(nums):
+                return []
+            take = []
+            if nums[i]%prev == 0 or prev == inf:
+                take = [nums[i]] + findDivisible(nums[i], i+1)
+            dontTake = findDivisible(prev, i+1)
+            return take if len(take) > len(dontTake) else dontTake
+        return findDivisible(inf, 0)
+    
+
+class Solution:
+    def largestDivisibleSubset(self, nums: List[int]) -> List[int]:
+        nums.sort()
+        memo = {}
+        def findDivisible(prev, i):
+            if (i, prev) in memo:
+                return memo[(i, prev)]
+            if i >= len(nums):
+                return []
+            take = []
+            if nums[i]%prev == 0 or prev == inf:
+                take = [nums[i]] + findDivisible(nums[i], i+1)
+            dontTake = findDivisible(prev, i+1)
+            memo[(i, prev)] = take if len(take) > len(dontTake) else dontTake
+            return memo[(i, prev)]
+        return findDivisible(inf, 0)
+
+
+
+
+
+
+
+
+
+
+
+
+
 # First of all, notice, that if we need to find 3 numbers given properties, than if we put then in decreasing order a > b > c, than it is sufficient and enough that a%b = 0 and b%c=0, then it is automatically a%c=0.
 
 # Let us now sort our numbers and in sol[i] list keep the best solution, where the biggest number is equal to nums[i]. How can we find it? Look at all smaller numbers and if nums[i] is divisible by this smaller number, we can update solution. Let us go through example: nums = [4,5,8,12,16,20].
