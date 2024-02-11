@@ -1,0 +1,31 @@
+# Explanation:
+# You should keep track of the available apples on daily basis and consume ones which will rot earlier.
+# We will try to consume the apples which will rot sooner and keep the apples which will rot later for later.
+# We can use a heap h which will store lists. Each list in the heap will contain the data related to the batch of apples of a day. 
+# The first element in the list will tell us till how many days the apple in that batch will stay fresh. 
+# The second element will tell how many apples are left in the same batch which can be consumed.
+
+# Complexity:
+# Time O(NlogN) Each batch will be inserted and popped from the heap once.
+# Space O(N) Maximum size of the heap.
+class Solution:
+    def eatenApples(self, apples: List[int], days: List[int]) -> int:
+        heap = []
+        
+        appleDays = 0
+        i = 0
+        while i < len(apples) or heap: #we will continue till our heap or our apples list
+            if i < len(apples) and apples[i] > 0: #we will not add [0, 0] entries, as they are meaning less for us
+                heappush(heap, [i+days[i]-1, apples[i]]) #After this, we will have apples which will rot earlist at the top of the heap.
+            
+            #Pop from heap if either the apples have expired or we have cosumed all the apples even if expiry date is in  the future
+            while heap and (heap[0][0] < i or heap[0][1] == 0): 
+                heappop(heap)
+            
+            #We will take the apple which will rot earliest(this will be at the top of the heap) for today.
+            #We will also reduce the apples by 1 because we cosumed it today.
+            if heap: 
+                appleDays += 1
+                heap[0][1] -= 1
+            i += 1
+        return appleDays
