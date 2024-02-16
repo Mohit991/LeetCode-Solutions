@@ -1,0 +1,43 @@
+# Let's use a heap. We first find the count of each number in the list. We will put all the freq/counts in the heap. 
+# No of unique values at the beginning is equal to the number of key value fairs in the dictionary. At each step, we will reduce the the least freq in the heap. If the freq becomes 0, this number is removed. So, we reduce the number of unique values ie we decrement uniques. At the end, we return uniques. 
+# TC: O(n) for Counter + O(n) for heapify + O(n logn) for removing n elements from heap
+# TC: O(n logn)
+
+
+class Solution:
+    def findLeastNumOfUniqueInts(self, arr: List[int], k: int) -> int:
+        valFreq = Counter(arr)
+        # heap = []
+        # for key in valFreq:
+        #     heappush(heap, valFreq[key])
+        
+        heap = list(valFreq.values())
+        heapify(heap) 
+
+        uniques = len(valFreq)
+        for i in range(k):
+            heap[0] -= 1
+            if heap[0] == 0:
+                uniques -= 1
+                heappop(heap)
+        return uniques
+
+    
+# We can also use a list which has all the frequencies for our values. We sort this list and use an index o track how many values we have removed. 
+# TC: O(n logn)
+
+class Solution:
+    def findLeastNumOfUniqueInts(self, arr: List[int], k: int) -> int:
+        valFreq = Counter(arr)
+        freq = list(valFreq.values())
+        freq.sort()
+    
+        uniques = len(freq)
+        currValIndex = 0
+        while k > 0:
+            freq[currValIndex] -= 1
+            k -= 1
+            if freq[currValIndex] == 0:
+                uniques -= 1
+                currValIndex += 1
+        return uniques
