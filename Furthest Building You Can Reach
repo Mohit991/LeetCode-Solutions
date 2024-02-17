@@ -1,0 +1,83 @@
+class Solution:
+    def furthestBuilding(self, heights: List[int], bricks: int, ladders: int) -> int:
+        memo = {}
+        def move(i, bricks, ladders):
+            if (i, bricks, ladders) in memo:
+                return memo[(i, bricks, ladders)]
+            if i+1 >= len(heights):
+                return i
+            
+            if heights[i+1] > heights[i]:
+                heightDiff = heights[i+1]-heights[i]
+                if bricks < heightDiff and ladders <= 0:
+                    return i
+                useBricks, useLadders = -inf, -inf
+                if ladders > 0:
+                    useLadders = move(i+1, bricks, ladders-1)
+                if bricks >= heightDiff:
+                    useBricks = move(i+1, bricks-heightDiff, ladders)
+                memo[(i, bricks, ladders)] = max(useBricks, useLadders)
+                return memo[(i, bricks, ladders)]
+            
+            memo[(i, bricks, ladders)] = move(i+1, bricks, ladders)
+            return memo[(i, bricks, ladders)]
+        
+        return move(0, bricks, ladders)
+
+# So Now you need to remember one thing for rest of your life
+
+# GREEDY >>>> DP ( Sorry DP lovers )
+
+# Whenever you apply DP in any question, first always try to make this
+# using simple greedy approach. If greedy fails then go for DP.
+
+# Because for DP either you might require O(n^2) or 
+# sometime for 3D dp O(n^3) time. 
+
+# But in greedy which mostly work by sorting data it will be 
+# in O(n*logn). 
+
+# If you closely check the input size is 10^5 so for sure 
+# we have to do this in O(nlogn) or lower time.
+# Here it's not like I have choice either I can pick ladder or brick, I also need to make sure I reach the maximum index.
+
+# So let's say you have to climb 8 and 2, and you have 5 bricks and 1 ladder.
+
+# What will you do ?
+# Obviously you will try to climb the highest using ladder else you will waste too many bricks.
+
+# So here we know that we will use ladders for the highest 
+# climb and bricks for the remaining.
+# Now here comes the best part
+# How will you manage this, like for the highest climb you are using ladders and for other you are using bricks.
+
+# First of all as we climb one by one, we will use ladders till we are out of ladders.
+# Now when we have consumed our all ladders, now it's our turn to use bricks. Now let's say previously we have use ladders to climb [4, 10, 6] and now we have to climb 5, so now I know that for 5 I should use ladder, and the previously I have used ladder for 4 I will use brick there.
+# So now ladders will be used to climb [10, 6, 5] and bricks for [4].
+# Now let's say I have to climb 2, then obviously I can't use ladders because they are already being used to climb high. SO I will use bricks here. But let's say I have one 1 brick left then I won't be able to climb further.
+# Now if you have read all 4 points clearly, you got to know that if the climb is lower or equal to the climb made by ladders then we can use brick.
+# but if we found high climb where previously we have used ladders for the lower climb, I will use ladders here and bricks there.
+
+# So everytime, I am picking up minimum from ladders if it is less 
+# or equal to the current climb, I will just use bricks.
+# Else I will remove the minimum and insert new climb in ladders and 
+# for the removed climb ( min. from ladders ) I will use bricks.
+# So now every time I need to remove minimum so I can use min-heap here of size ladders.
+
+
+
+class Solution:
+    def furthestBuilding(self, heights: List[int], bricks: int, ladders: int) -> int:
+        heap = []
+        for i in range(len(heights)-1):
+            heightDiff = heights[i+1]-heights[i]
+            if heightDiff <= 0:
+                continue
+            heappush(heap, heightDiff)
+            if ladders < len(heap):
+                minHeight = heappop(heap)
+                bricks -= minHeight
+            if bricks < 0:
+                return i
+        return len(heights)-1
+                
