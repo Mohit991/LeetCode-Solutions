@@ -6,6 +6,7 @@ Four tasks of backend:
 1. Delete Data
 
 These operations are called CRUD operations. 
+![Aspose Words 80cb7b88-b71b-448d-b2c3-8ca136aca62f 021](https://github.com/Mohit991/LeetCode-Solutions/assets/36065945/b77d0024-190c-43f1-82a6-ff313368eeee)
 
 Three parts of backend:
 
