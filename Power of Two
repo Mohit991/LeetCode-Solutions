@@ -1,0 +1,23 @@
+class Solution:
+    def isPowerOfTwo(self, n: int) -> bool:
+        if n <= 0:
+            return False
+        
+        #Power of two will only have 1 one. If we see more than 1 one then we return false.
+        oneOccured = False
+        while n > 0:
+            if (n & 1):
+                if not oneOccured:
+                    oneOccured = True
+                else:
+                    return False
+            n >>= 1
+        return True
+                
+        
+class Solution:
+    def isPowerOfTwo(self, n: int) -> bool:
+        if n <= 0:
+            return False
+        #if n and n-1 == 0 then it is a power of two, otherwise not. 
+        return not(n & n-1)
