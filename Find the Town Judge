@@ -1,0 +1,31 @@
+class Solution:
+    def findJudge(self, n: int, trust: List[List[int]]) -> int:
+        if not trust:
+            if n == 1:
+                return 1
+            else:
+                return -1
+        peopleWhoTrust = set()
+        peopleWhoAreTrusted = {}
+        
+        for t in trust:
+            peopleWhoTrust.add(t[0])
+            if t[1] in peopleWhoAreTrusted:
+                peopleWhoAreTrusted[t[1]] += 1
+            else:
+                peopleWhoAreTrusted[t[1]] = 1
+        
+        if len(peopleWhoTrust) != (n-1):
+            return -1
+        
+        judge = -1
+        for person in range(1, n+1):
+            if person not in peopleWhoTrust:
+                judge = person
+                break
+                
+        if judge not in peopleWhoAreTrusted or peopleWhoAreTrusted[judge] != (n-1):
+            return -1
+        
+        return judge
+        
