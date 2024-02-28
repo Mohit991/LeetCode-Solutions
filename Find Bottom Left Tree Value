@@ -1,0 +1,45 @@
+class Solution:
+    def findBottomLeftValue(self, root: Optional[TreeNode]) -> int:
+        q = [root]
+        levels = [[root.val]]
+        visited = set()
+        
+        while q:
+            qLen = len(q)
+            level = []
+            for i in range(0, qLen):
+                node = q.pop(0)
+                if node in visited:
+                    continue
+                visited.add(node)
+                if node.left:
+                    q.append(node.left)
+                    level.append(node.left.val)
+                if node.right:
+                    q.append(node.right)
+                    level.append(node.right.val)
+            if level:
+                levels.append(level)
+        # print(levels)
+        return levels[-1][0]
+                
+class Solution:
+    def findBottomLeftValue(self, root: Optional[TreeNode]) -> int:
+        q = [root]
+        visited = set()
+        leftMost = 0
+        while q:
+            qLen = len(q)
+            leftMost = q[0].val
+            for i in range(0, qLen):
+                node = q.pop(0)
+                if node in visited:
+                    continue
+                visited.add(node)
+                if node.left:
+                    q.append(node.left)
+                if node.right:
+                    q.append(node.right)
+                
+        return leftMost
+        
