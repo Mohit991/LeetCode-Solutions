@@ -1,0 +1,16 @@
+class Solution:
+    def minimumLength(self, s: str) -> int:
+        left, right = 0, len(s)-1
+        
+        while left < right and s[left] == s[right]:
+            leftChar = s[left]
+            rightChar = s[right]
+            while left <= right and s[left] == leftChar:
+                left += 1
+            while left <= right and s[right] == rightChar:
+                right -= 1
+        
+        if left > right:
+            return 0
+        return right-left+1
+                
