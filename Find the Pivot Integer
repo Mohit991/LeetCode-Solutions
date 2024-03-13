@@ -1,0 +1,44 @@
+class Solution:
+    def pivotInteger(self, n: int) -> int:
+        if n == 1:
+            return n
+        runningSum = []
+        sum = 0
+        for i in range(1, n+1):
+            sum += i
+            runningSum.append(sum)
+        totalSum = sum 
+
+        for i in range(n):
+            if runningSum[i] == totalSum - runningSum[i-1]:
+                return i+1
+        return -1
+    
+    
+    
+    
+# Calculate the sum of integers.
+# 1 to x = x(x+1)/2
+# x to n = (1 to n) - (1 to (x-1))
+# Equating both we get, x^2= n(n+1)/2
+# Find the square root of the sum=n(n+1)/2:
+# Take the square root of the sum calculated in step 1 and store it in variable a.
+# Check if the square root is an integer:
+# If the square root is an integer, it implies that the pivot point exists and that the sum of integers from 1 to that pivot point is equal to the sum of integers from the pivot point to
+# n
+# n.
+# We can check if the difference between the square root and its ceiling value (rounded up) is zero. If it is, it means the square root is an integer.
+# If the difference is zero, return the square root as the pivot integer.
+# If not, return -1, indicating that there's no valid pivot integer.
+# Return the result:
+# If the square root is an integer, return it as the pivot integer.
+# If not, return -1.
+# Complexity
+# Time complexity: O(1)
+# Space complexity: O(1)   
+class Solution:
+    def pivotInteger(self, n: int) -> int:
+        x = sqrt((n*(n+1))/2)
+        if int(x) == x:
+            return int(x)
+        return -1
