@@ -1,0 +1,42 @@
+# Initialization:
+
+# count = {0: 1}: This initializes a dictionary called count with one key-value pair: 0 as the key and 1 as the value. This represents that there is one subarray whose sum is 0.
+
+# curr_sum = 0: This initializes a variable curr_sum to keep track of the cumulative sum of elements encountered so far.
+
+# total_subarrays = 0: This initializes a variable total_subarrays to keep track of the total count of subarrays whose sum is equal to the goal.
+
+# Iterating through nums:
+# The code iterates through each element num in the list nums.
+# Calculating Cumulative Sum:
+
+# curr_sum += num: This adds the current element num to the curr_sum, updating the cumulative sum.
+
+# Checking for Subarrays with the Desired Sum:
+# if curr_sum - goal in count: This checks if the difference between the current cumulative sum curr_sum and the goal is present in the count dictionary.
+# If it is, it means there exists a subarray whose sum is equal to the goal.
+# Updating total_subarrays:
+
+# total_subarrays += count[curr_sum - goal]: If there is such a subarray, the code increments total_subarrays by the count of subarrays found in count[curr_sum - goal].
+# Updating Count Dictionary:
+
+# count[curr_sum] = count.get(curr_sum, 0) + 1: This updates the count dictionary by incrementing the count of the current cumulative sum curr_sum. If curr_sum is already present in count, it increments its count by 1. Otherwise, it initializes its count to 1.
+# Returning the Result:
+
+# return total_subarrays: Finally, the code returns the total count of subarrays whose sum equals the goal.
+
+
+class Solution:
+    def numSubarraysWithSum(self, nums: List[int], goal: int) -> int:
+        previousSums = {0:1}
+        cummulativeSum = 0
+        subarrays = 0
+        for n in nums:
+            cummulativeSum += n
+            if (cummulativeSum - goal) in previousSums:
+                subarrays += previousSums[(cummulativeSum - goal)]
+            if cummulativeSum in previousSums:
+                previousSums[cummulativeSum] += 1
+            else:
+                previousSums[cummulativeSum] = 1
+        return subarrays
