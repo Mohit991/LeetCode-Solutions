@@ -1,0 +1,20 @@
+# Similar to merge interval and meeting rooms problem. 
+class Solution:
+    def findMinArrowShots(self, points: List[List[int]]) -> int:
+        sortedPoints = sorted(points, key = lambda x: x[0])
+        # print(sortedPoints)
+        
+        arrows = 1
+        lastPoint = sortedPoints[0]
+
+        for point in sortedPoints:
+            if point[0] <= lastPoint[1]:
+                if point[1] < lastPoint[1]: #We need to udpate last balloon to current, since current balloon is smaller. 
+                    lastPoint = point 
+            else:
+                arrows += 1
+                lastPoint = point
+                
+        return arrows
+                
+        
