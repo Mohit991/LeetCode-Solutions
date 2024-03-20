@@ -1,0 +1,13 @@
+class Solution:
+    def rowAndMaximumOnes(self, mat: List[List[int]]) -> List[int]:
+        maxOnes = 0
+        maxRow = 0
+        for i in range(len(mat)):
+            ones = 0
+            for j in range(len(mat[0])):
+                if mat[i][j] == 1:
+                    ones += 1
+            if ones > maxOnes:
+                maxOnes = ones
+                maxRow = i
+        return [maxRow, maxOnes]
