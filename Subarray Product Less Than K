@@ -1,0 +1,42 @@
+# This is a sliding window problem. Create a window using two pointers. 
+# We will try to make sure that the window between i and j has array whose 
+# product is less than. 
+# We will add elements from the right side ie j, each time we add a new elements j
+# j-i+1 subarryas are added to the count. 
+# If the product goes beyond k, then we shrink the array from the left side, 
+# by dividing ith element, we keep incrementing i and dividing ith element as long
+# as product is larger than k. 
+
+# The idea is always keep an max-product-window less than K;
+# Every time shift window by adding a new number on the right(j), if the product is greater than k, 
+# then try to reduce numbers on the left(i), until the subarray product fit less than k again, 
+# (subarray could be empty);
+# Each step introduces x new subarrays, where x is the size of the current window (j + 1 - i);
+# example:
+# for window (5, 2), when 6 is introduced, it add 3 new subarray: (5, (2, (6)))
+  #       (6)
+  #    (2, 6)
+  # (5, 2, 6)
+ #TC - O(n), SC - O(1)
+
+class Solution:
+    def numSubarrayProductLessThanK(self, nums: List[int], k: int) -> int:
+        i, j = 0, 0
+        n = len(nums)
+        if k == 0:
+            return 0
+        
+        product = 1
+        i, j = 0, 0
+        total = 0
+        
+        while j < len(nums):
+            product *= nums[j]
+            while product >= k and i <= j:
+                product = product // nums[i]
+                i += 1
+            total += (j-i+1)
+            j += 1
+        return total
+
+        
