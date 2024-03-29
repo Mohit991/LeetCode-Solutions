@@ -1,0 +1,17 @@
+class Solution:
+    def countSubarrays(self, nums: List[int], k: int) -> int:
+        n = len(nums)
+        maxElement, maxElementFreq = max(nums), 0
+        i, j = 0, 0
+        count = 0
+        while j < n:
+            if nums[j] == maxElement:
+                maxElementFreq += 1
+                
+            while maxElementFreq >= k:
+                count += n-j
+                if maxElement == nums[i]:
+                    maxElementFreq -= 1
+                i += 1
+            j += 1   
+        return count
