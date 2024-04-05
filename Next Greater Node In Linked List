@@ -1,0 +1,44 @@
+class Solution:
+    def nextLargerNodes(self, head: Optional[ListNode]) -> List[int]:
+        lenOfLL = 0
+        temp = head
+        while temp:
+            lenOfLL += 1
+            temp = temp.next
+        
+        answer = [0 for i in range(lenOfLL)]
+        stack = []
+        temp = head
+        index = 0
+        
+        while temp:
+            currVal = temp.val
+            while stack and stack[-1][0] < currVal:
+                pair = stack.pop()
+                answer[pair[1]] = currVal
+            stack.append((currVal, index))
+            index += 1
+            temp = temp.next
+        return answer
+
+##############################################################################################
+#Convert LL to an array. Use the next bigger algorithm(uses stack) to find the answer. 
+class Solution:
+    def nextLargerNodes(self, head: Optional[ListNode]) -> List[int]:
+        arrayList = []
+        temp = head
+        while temp:
+            arrayList.append(temp.val)
+            temp = temp.next
+        
+        answer = [0 for i in range(len(arrayList))]
+        stack = []
+        
+        for i in range(len(arrayList)):
+            currVal = arrayList[i]
+            while stack and stack[-1][0] < currVal:
+                pair = stack.pop()
+                answer[pair[1]] = currVal
+            stack.append((currVal, i))
+        return answer
+        
