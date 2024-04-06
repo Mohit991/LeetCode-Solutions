@@ -1,0 +1,22 @@
+class Solution:
+    def minRemoveToMakeValid(self, s: str) -> str:
+        stack = []
+        wrong = set()
+        for index, symbol in enumerate(s):
+            if symbol == '(':
+                stack.append(['(', index])
+            elif symbol == ')':
+                while stack and stack[-1][0] != '(':
+                    wrong.add(stack.pop()[1])
+                if stack:
+                    stack.pop()
+                else:
+                    wrong.add(index)
+        while stack:
+            wrong.add(stack.pop()[1])
+        
+        res = ''
+        for i in range(len(s)):
+            if i not in wrong:
+                res += s[i]
+        return res
