@@ -1,20 +1,21 @@
-class Solution {
-    public List<Integer> getRow(int rowIndex) {
-         List<List<Integer>> list = new ArrayList<>();
-        for(int i=0 ; i<=rowIndex+1; i++){
-            list.add(new ArrayList<Integer>());
-            for(int j=0; j<i; j++){
-               if(j==0 || j == (i-1)){
-                   list.get(i).add(1);
-               } 
-               else{
-                   int x = list.get(i-1).get(j);
-                   int y = list.get(i-1).get(j-1);
-                   list.get(i).add(x+y);                   
-               } 
-            }
-        }
-        // list.remove(0);
-        return list.get(rowIndex+1);
-    }
-}
+class Solution:
+    def getRow(self, rowIndex: int) -> List[int]:
+        if rowIndex == 0: 
+            return [1]
+        
+        row = [1]*(rowIndex+1)
+        rowNum = 1
+        
+        while rowNum != rowIndex+1:
+            previous = 1
+            for i in range(rowNum+1):
+                if i != 0 and i != rowNum:
+                    temp = row[i] + previous
+                    previous = row[i]
+                    row[i] = temp              
+            rowNum += 1
+        return row
+        
+            
+        
+        
