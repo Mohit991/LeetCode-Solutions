@@ -1,0 +1,22 @@
+# We will use the BFS. 
+class Solution:
+    def maxLevelSum(self, root: Optional[TreeNode]) -> int:
+        q = [root]
+        maxLevelSum = -inf
+        maxLevel = 1
+        level = 1
+        while q:
+            lenQ = len(q)
+            levelSum = 0
+            for i in range(lenQ):
+                curr = q.pop(0)
+                if curr.left:
+                    q.append(curr.left)
+                if curr.right:
+                    q.append(curr.right)
+                levelSum += curr.val
+            if levelSum > maxLevelSum:
+                maxLevelSum = levelSum
+                maxLevel = level
+            level += 1
+        return maxLevel
