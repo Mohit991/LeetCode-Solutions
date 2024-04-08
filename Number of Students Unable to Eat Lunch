@@ -1,0 +1,35 @@
+class Solution:
+    def countStudents(self, students: List[int], sandwiches: List[int]) -> int:
+        unable = 0
+        while sandwiches and unable != len(students):
+            if sandwiches[0] == students[0]:
+                sandwiches.pop(0)
+                students.pop(0)
+                unable = 0 
+            else:
+                students.append(students.pop(0))
+                unable += 1
+        return unable
+    
+class Solution:
+    def countStudents(self, students: List[int], sandwiches: List[int]) -> int:
+        squareStudents = 0
+        circleStudents = 0
+        for student in students:
+            if student == 0:
+                circleStudents += 1
+            else:
+                squareStudents += 1
+        
+        for sandwich in sandwiches:
+            if sandwich == 0:
+                if circleStudents > 0:
+                    circleStudents -= 1
+                else: 
+                    break
+            if sandwich == 1:
+                if squareStudents > 0:
+                    squareStudents -= 1
+                else:
+                    break
+        return circleStudents + squareStudents
