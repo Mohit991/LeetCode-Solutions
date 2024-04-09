@@ -1,46 +1,57 @@
 class Solution:
     def findWinners(self, matches: List[List[int]]) -> List[List[int]]:
-        losers = {}
-        winners = set()
+        losses = {}
         for match in matches:
-            winners.add(match[0])
-            if match[1] in losers:
-                losers[match[1]] += 1
+            winner = match[0]
+            loser = match[1]
+            if loser in losses:
+                losses[loser] += 1
             else:
-                losers[match[1]] = 1
-        
-        answer0 = []
-        for winner in winners:
-            if winner not in losers:
-                answer0.append(winner)
-        
-        answer1 = []
-        for loser in losers:
-            if losers[loser] == 1:
-                answer1.append(loser)
-        
-        answer0.sort()
-        answer1.sort()
-        return [answer0, answer1]
-        
+                losses[loser] = 1
+            
+            if winner not in losses:
+                losses[winner] = 0 #no losses so far
+                
+        exactlyOneLoss = []
+        noLosses = []
+        for player in losses:
+            if losses[player] == 1:
+                exactlyOneLoss.append(player)
+            if losses[player] == 0:
+                noLosses.append(player)
+    
+        noLosses.sort()
+        exactlyOneLoss.sort()
+        return [noLosses, exactlyOneLoss]
+    
+    
+
 class Solution:
     def findWinners(self, matches: List[List[int]]) -> List[List[int]]:
-        results = {}
-        for match in matches:
-            if match[1] in results:
-                results[match[1]] += 1
-            else:
-                results[match[1]] = 1
-            
-            if match[0] not in results:
-                results[match[0]] = 0
+        winners = set()
+        losses = {}
         
-        ans0, ans1 = [], []
-        for key in results:
-            if results[key] == 0:
-                ans0.append(key)
-            if results[key] == 1:
-                ans1.append(key)
-        ans0.sort()
-        ans1.sort()
-        return [ans0, ans1]        
+        for match in matches:
+            winner = match[0]
+            loser = match[1]
+            if loser in losses:
+                losses[loser] += 1
+            else:
+                losses[loser] = 1            
+            winners.add(winner)
+        
+            
+        exactlyOneLoss = []
+        for loser in losses:
+            if losses[loser] == 1:
+                exactlyOneLoss.append(loser)
+        
+        noLosses = []
+        for winner in winners:
+            if winner not in losses:
+                noLosses.append(winner)
+                
+        noLosses.sort()
+        exactlyOneLoss.sort()
+        return [noLosses, exactlyOneLoss]
+    
