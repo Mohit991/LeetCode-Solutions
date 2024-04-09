@@ -1,0 +1,36 @@
+class Solution:
+    def lengthOfLongestSubsequence(self, nums: List[int], target: int) -> int:
+        memo = {}
+        def findLongestSubsequence(i, sum):
+            if (i, sum) in memo:
+                return memo[(i, sum)]
+            if sum == target:
+                return 0
+            if sum < 0 or i >= len(nums):
+                return -inf
+            take = findLongestSubsequence(i+1, sum+nums[i]) + 1
+            dontTake = findLongestSubsequence(i+1, sum) + 0
+            memo[(i, sum)] = max(take, dontTake)
+            return memo[(i, sum)]
+        
+        longestLength = findLongestSubsequence(0, 0)
+        return longestLength if longestLength != -inf else -1 
+    
+    
+class Solution:
+    def lengthOfLongestSubsequence(self, nums: List[int], target: int) -> int:
+        memo = {}
+        def findLongestSubsequence(i, target):
+            if (i, target) in memo:
+                return memo[(i, target)]
+            if target == 0:
+                return 0
+            if target < 0 or i >= len(nums):
+                return -inf
+            take = findLongestSubsequence(i+1, target-nums[i]) + 1
+            dontTake = findLongestSubsequence(i+1, target) + 0
+            memo[(i, target)] = max(take, dontTake)
+            return memo[(i, target)]
+        
+        longestLength = findLongestSubsequence(0, target)
+        return longestLength if longestLength != -inf else -1
