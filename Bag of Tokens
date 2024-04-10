@@ -1,0 +1,38 @@
+# The logic is very simple. 
+# If you have enough power to play face up, do that to the minimum token
+# This way you gain a point by losing the least amount of power. 
+# If you dont have enough power to play face up, play face down. 
+# This way you gain max power by just losing a single point.
+# At any point, if score goes less than 0, break and return.
+
+# Implementation:
+# 1. Sort the array.
+# 2. Do face up from the beginning (minimum tokens) as per the logic.
+# 3. Do face down from the end (maximum power) as per the logic.
+# 4. Keep track of the max score by using a variable
+# 5. If all cards are played either face up or face down, STOP. 
+# 6. If at any point score goes below 0, break and return. 
+
+
+
+class Solution:
+    def bagOfTokensScore(self, tokens: List[int], power: int) -> int:
+        tokens.sort()
+        
+        score = 0
+        maxScore = 0
+        faceUpIndex, faceDownIndex = 0, len(tokens)-1
+        
+        while faceUpIndex <= faceDownIndex:
+            if tokens[faceUpIndex] <= power:
+                power -= tokens[faceUpIndex]
+                score += 1
+                maxScore = max(maxScore, score)
+                faceUpIndex += 1
+            else:
+                power += tokens[faceDownIndex]
+                score -= 1
+                faceDownIndex -= 1
+                if score < 0:
+                    break
+        return maxScore
