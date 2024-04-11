@@ -1,0 +1,21 @@
+class Solution:
+    def removeKdigits(self, num: str, k: int) -> str:
+        if len(num) == k:
+            return '0'
+        
+        stack = []
+        resultDigitsCount = len(num)-k
+        for i in range(len(num)):
+            digit = int(num[i])
+            while k > 0 and stack and stack[-1] > digit:
+                stack.pop()
+                k -= 1
+            stack.append(digit)
+        
+        res = ''
+        beginning = True
+        for i in range(resultDigitsCount):
+            if res == '' and stack[i] == 0:
+                continue
+            res += str(stack[i])
+        return res if res != '' else '0'
