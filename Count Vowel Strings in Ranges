@@ -1,0 +1,35 @@
+# Step 1: Transform this problem into the problem of findings ones between some range
+# in a binary array.
+# Step 2: Solve the transformed problem using prefix sum method. 
+
+# First we convert all the words that satisfy the condition into 1 and 0 otherwise. 
+# We create another array to capture the prefix sum of the tranformed array. 
+# We use this prefix sum array to find the no of ones (no of words that satify the
+# condition) in a range. 
+
+class Solution:
+    def vowelStrings(self, words: List[str], queries: List[List[int]]) -> List[int]:
+        vowels = set(('a', 'e', 'i', 'o', 'u'))
+        wordsTransform = []
+        for word in words:
+            if word[0] in vowels and word[-1] in vowels:
+                wordsTransform.append(1)
+            else:
+                wordsTransform.append(0)
+        
+        prefixSumList = []
+        prefixSum = 0
+        for val in wordsTransform:
+            prefixSum += val
+            prefixSumList.append(prefixSum)
+        
+        # print(prefixSumList)
+        ans = []
+        for query in queries:
+            start = query[0]-1
+            end = query[1]
+            if start < 0:
+                ans.append(prefixSumList[end])
+            else:
+                ans.append(prefixSumList[end] - prefixSumList[start])
+        return ans
