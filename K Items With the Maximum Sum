@@ -1,0 +1,20 @@
+class Solution:
+    def kItemsWithMaximumSum(self, numOnes: int, numZeros: int, numNegOnes: int, k: int) -> int:
+        maxSum = k
+        if k <= numOnes:
+            return maxSum
+        else:
+            maxSum = numOnes
+            k -= numOnes
+            if k <= numZeros:
+                return maxSum
+            else:
+                k -= numZeros
+                return maxSum - k
+            
+class Solution:
+    def kItemsWithMaximumSum(self, numOnes: int, numZeros: int, numNegOnes: int, k: int) -> int:
+        if k < numOnes + numZeros:
+            return min(numOnes, k)
+        else:
+            return numOnes - (k - (numOnes + numZeros))
