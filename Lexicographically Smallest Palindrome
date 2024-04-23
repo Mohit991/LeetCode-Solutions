@@ -1,0 +1,23 @@
+class Solution:
+    def makeSmallestPalindrome(self, s: str) -> str:
+        n = len(s)
+        # ans = ['' for i in range(n)]
+        ans = list(s)
+        start, end = 0, n-1
+        
+        while start <= end:
+            if s[start] != s[end]:
+                if s[start] < s[end]:
+                    ans[start] = s[start]
+                    ans[end] = s[start]
+                else:
+                    ans[start] = s[end]
+                    ans[end] = s[end]
+            else:
+                ans[start] = s[start]
+                ans[end] = s[start]
+            start += 1
+            end -= 1
+
+        # print(ans)
+        return ''.join(ans)
