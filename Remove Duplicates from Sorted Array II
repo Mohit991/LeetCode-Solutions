@@ -1,0 +1,20 @@
+class Solution:
+    def removeDuplicates(self, nums: List[int]) -> int:
+        if len(nums) <= 2:
+            return len(nums)
+        
+        twiceAdded = False
+        i, j = 0, 1
+        
+        while j < len(nums):
+            if nums[i] != nums[j]:
+                i += 1
+                nums[i] = nums[j]
+                twiceAdded = False
+            else:
+                if not twiceAdded:
+                    i += 1
+                    nums[i] = nums[j]
+                    twiceAdded = True
+            j += 1
+        return i+1
