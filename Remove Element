@@ -1,0 +1,15 @@
+class Solution:
+    def removeElement(self, nums: List[int], val: int) -> int:
+        front, back = 0, len(nums)-1
+        while front <= back:
+            if nums[front] == val:
+                if nums[back] != val:
+                    temp = nums[front]
+                    nums[front] = nums[back]
+                    nums[back] = temp
+                    front += 1
+                back -= 1                    
+            else:
+                front += 1
+        return back+1 if back >= 0 else 0
+        
