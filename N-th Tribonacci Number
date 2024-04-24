@@ -1,0 +1,17 @@
+class Solution:
+    def tribonacci(self, n: int) -> int:
+        if n == 0:
+            return 0
+        if n == 1 or n == 2:
+            return 1
+        
+        t0, t1, t2 = 0, 1, 1
+        n -= 2
+        while n > 0:
+            temp1 = t1
+            temp2 = t2
+            t2 = t2 + t1 + t0
+            t1 = temp2
+            t0 = temp1
+            n -= 1
+        return t2
