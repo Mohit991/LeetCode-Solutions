@@ -1,0 +1,43 @@
+class Solution:
+    def wordPattern(self, pattern: str, s: str) -> bool:
+        words = s.split(' ')
+        if len(words) != len(pattern):
+            return False
+        
+        charToWordMap = {}
+        wordToCharMap = {}
+        for i in range(len(words)):
+            if pattern[i] in charToWordMap and charToWordMap[pattern[i]] != words[i]:
+                return False
+            if words[i] in wordToCharMap and wordToCharMap[words[i]] != pattern[i]:
+                return False
+            charToWordMap[pattern[i]] = words[i]
+            wordToCharMap[words[i]] = pattern[i]
+        return True
+
+#################################################################
+
+class Solution:
+    def wordPattern(self, pattern: str, s: str) -> bool:
+        words =  s.split(' ')
+        # print(words)
+        
+        if len(words) != len(pattern):
+            return False
+        
+        mapping = {}
+        alreadyMappedWord = set()
+        
+        
+        for i in range(len(words)):
+            if pattern[i] in mapping:
+                mappingOfWord = mapping[pattern[i]]
+                if mappingOfWord != words[i]:
+                    return False
+            else:
+                if words[i] in alreadyMappedWord:
+                    return False
+                mapping[pattern[i]] = words[i]
+                alreadyMappedWord.add(words[i])
+                
+        return True
