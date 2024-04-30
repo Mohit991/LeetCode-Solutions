@@ -1,18 +1,41 @@
-class Solution {
-    public boolean isValid(String s) {
-        Stack<Character> stack = new Stack<Character>();
-        for(int i=0; i<s.length(); i++){
-            if(s.charAt(i) ==  ')' && !stack.isEmpty() && stack.peek() == '('){
-                stack.pop();
-            }
-            else if(s.charAt(i) == '}' && !stack.isEmpty() && stack.peek() == '{'){
-                stack.pop();
-            }
-            else if(s.charAt(i) == ']' && !stack.isEmpty() && stack.peek() == '['){
-                stack.pop();
-            }
-            else stack.push(s.charAt(i));
-        }
-        return stack.isEmpty();
-    }
-}
+# Approach
+# Here is the step-by-step approach of the algorithm:
+
+# Initialize an empty stack.
+
+# Traverse the input string character by character.
+
+# If the current character is an opening bracket (i.e., '(', '{', '['),
+# push it onto the stack.
+
+# If the current character is a closing bracket (i.e., ')', '}', ']'),
+# check if the stack is empty. If it is empty or stack top is not the 
+# opening bracket correspoding to the symbol we are seeing, return false,
+# because the closing bracket does not have a corresponding opening bracket.
+
+# After traversing the entire input string, if the stack is empty, return
+# true, because all opening brackets have been matched with their 
+# corresponding closing brackets. Otherwise, return false, because some
+# opening brackets have not been matched with their corresponding closing
+# brackets.
+
+class Solution:
+    def isValid(self, s: str) -> bool:
+        stack = []
+        
+        for symbol in s:
+            if symbol in '([{':
+                stack.append(symbol)
+            else:
+                if symbol == ')':
+                    if not stack or stack[-1] != '(':
+                        return False
+                if symbol == ']':
+                    if not stack or stack[-1] != '[':
+                        return False
+                if symbol == '}':
+                    if not stack or stack[-1] != '{':
+                        return False
+                stack.pop()
+                
+        return True if not stack else False
