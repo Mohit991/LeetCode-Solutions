@@ -1,0 +1,58 @@
+class Solution:
+    def isCompleteTree(self, root):
+        leftHeight = 0
+        temp = root
+        while temp:
+            leftHeight += 1
+            temp = temp.left
+            
+        rightHeight = 0
+        temp = root
+        while temp:
+            rightHeight += 1
+            temp = temp.right
+        
+        if leftHeight == rightHeight:
+            return leftHeight
+        return -1
+        
+    def countNodes(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        height = self.isCompleteTree(root)
+        if height != -1:
+            return (2**height) - 1
+        else:
+            return 1 + self.countNodes(root.left) + self.countNodes(root.right)
+        
+######################################################################################
+
+class Solution:
+    def getLeftSubtreeHeight(self, root):
+        leftHeight = 0
+        while root:
+            leftHeight += 1
+            root = root.left
+        return leftHeight
+    
+    def getRightSubtreeHeight(self, root):
+        rightHeight = 0
+        while root:
+            rightHeight += 1
+            root = root.right
+        return rightHeight
+        
+    def countNodes(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        
+        leftHeight = self.getLeftSubtreeHeight(root)
+        rightHeight = self.getRightSubtreeHeight(root)
+        
+        if leftHeight == rightHeight:
+            return 2**leftHeight - 1
+        else:
+            return 1 + self.countNodes(root.left) + self.countNodes(root.right)
+
+            
+    
