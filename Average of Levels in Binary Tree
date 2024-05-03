@@ -1,0 +1,20 @@
+# Use BFS
+class Solution:
+    def averageOfLevels(self, root: Optional[TreeNode]) -> List[float]:
+        q = [root]
+        avgOfLevels = []
+        
+        while q:
+            qLen = len(q)
+            levelSum = 0
+            levelNodeCount = qLen
+            for i in range(qLen):
+                node = q.pop(0)
+                levelSum += node.val
+                if node.left:
+                    q.append(node.left)
+                if node.right:
+                    q.append(node.right)
+            avgOfLevels.append(levelSum/levelNodeCount)  
+            
+        return avgOfLevels
