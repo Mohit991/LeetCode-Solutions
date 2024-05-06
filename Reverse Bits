@@ -1,0 +1,22 @@
+class Solution:
+    def reverseBits(self, n: int) -> int:
+        mask = 0
+        for i in range(32):
+            if n & 1:
+                mask = (mask * 2) + 1
+            else: 
+                mask = mask << 1
+            n = n >> 1
+        return mask
+    
+##############################################
+
+class Solution:
+    def reverseBits(self, n: int) -> int:
+        mask = 0
+        for i in range(32):
+            mask = mask << 1
+            if n & 1:
+                mask = mask ^ 1 #make mask's last bit 1 by xoring it with 1. (it is 0 at the moment.)
+            n = n >> 1
+        return mask
