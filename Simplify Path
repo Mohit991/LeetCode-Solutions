@@ -1,0 +1,21 @@
+class Solution:
+    def simplifyPath(self, path: str) -> str:
+        brokenPath = path.split('/')
+        stack = []
+        
+        for article in brokenPath:
+            if article == '.' or article == '':
+                continue
+            elif article == '..':
+                if stack:
+                    stack.pop()
+            else:
+                stack.append(article)
+        
+        canonicalPath = ''
+        for article in stack:
+            canonicalPath += '/' + article
+        
+        if canonicalPath == '':
+            return "/"
+        return canonicalPath
