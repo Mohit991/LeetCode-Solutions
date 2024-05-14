@@ -1,0 +1,43 @@
+class Solution:
+    def validMutation(self, gene1, gene2):
+        diff = 0
+        for i in range(8):
+            if gene1[i] != gene2[i]:
+                diff += 1
+            if diff > 1:
+                return False
+        return diff == 1
+    
+    def minMutation(self, startGene: str, endGene: str, bank: List[str]) -> int:
+        graph = defaultdict(list)
+        
+        for i in range(len(bank)):
+            for j in range(i+1, len(bank)):
+                if self.validMutation(bank[i], bank[j]):
+                    graph[bank[i]].append(bank[j])
+                    graph[bank[j]].append(bank[i])
+                    
+        if startGene not in graph:
+            for j in range(len(bank)):
+                if self.validMutation(startGene, bank[j]):
+                    graph[startGene].append(bank[j])
+        
+        q = [startGene]
+        visited = set()
+        
+        level = 0
+        while q:
+            qLen = len(q)
+            for i in range(qLen):
+                gene = q.pop(0)
+                if gene in visited:
+                    continue
+                visited.add(gene)
+                if gene == endGene:
+                    return level
+                for nei in graph[gene]:
+                    q.append(nei)
+            level += 1
+        return -1
+        
+        
