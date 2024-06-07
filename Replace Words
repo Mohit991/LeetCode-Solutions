@@ -1,0 +1,45 @@
+class TrieNode:
+    def __init__(self):
+        self.mapping = {}
+        self.endOfWord = False
+
+class Trie:
+    def __init__(self):
+        self.head = TrieNode()
+        
+    def addWord(self, word):
+        temp = self.head
+        for char in word:
+            if char not in temp.mapping:
+                temp.mapping[char] = TrieNode()
+            temp = temp.mapping[char]
+        temp.endOfWord = True
+        
+class Solution:
+    def replaceWords(self, dictionary: List[str], sentence: str) -> str:
+        t = Trie()
+        for word in dictionary:
+            t.addWord(word)
+        
+        wordOfSentence = sentence.split(" ")
+        for i in range(len(wordOfSentence)):
+            word = wordOfSentence[i]
+            root = ''
+            temp = t.head
+            for char in word:
+                if char in temp.mapping:
+                    root += char
+                    temp = temp.mapping[char]
+                    if temp.endOfWord == True:
+                        wordOfSentence[i] = root
+                        break
+                else:
+                    break
+        
+        ans = ''
+        for i in range(len(wordOfSentence)):
+            ans += wordOfSentence[i]
+            if i == len(wordOfSentence)-1:
+                break
+            ans += ' '
+        return ans
