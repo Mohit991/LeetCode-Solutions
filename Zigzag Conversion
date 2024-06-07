@@ -1,0 +1,40 @@
+# We create one zigZag list which will contain lists. 
+# Each row of this list will contain string at that index in the 
+# zigzag string. 
+
+# we keep a direction flag to know if we are going downwards or 
+# upwards. direction == true means downwards otherwise upwards. 
+# We will add chars from s into the correct row of the zigZag. 
+# We determine our direction in zigZag using the var direction. 
+# We change the direction when we reach 0 or len(zigZag)
+
+# At the end we simply collect all the rows from zigZag into 
+# the ans. 
+
+class Solution:
+    def convert(self, s: str, numRows: int) -> str:
+        if numRows == 1:
+            return s
+        
+        zigZag = [''] * numRows
+        i = 0
+        j = 0
+        direction = True
+        
+        while i < len(s):
+            zigZag[j] += s[i]
+            i += 1
+            
+            if direction:
+                j += 1
+            else:
+                j -= 1
+                
+            if j == 0 or j == len(zigZag)-1:
+                direction = not direction
+            
+        
+        ans = ''
+        for i in range(len(zigZag)):
+            ans += zigZag[i]
+        return ans
