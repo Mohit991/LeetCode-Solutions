@@ -1,0 +1,39 @@
+class TrieNode:
+    def __init__(self):
+        self.lettersDict = {}
+        self.endOfWord = False
+        
+class WordDictionary:
+
+    def __init__(self):
+        self.head = TrieNode()
+
+    def addWord(self, word: str) -> None:
+        temp = self.head 
+        for letter in word:
+            if letter not in temp.lettersDict:
+                temp.lettersDict[letter] = TrieNode()
+            temp = temp.lettersDict[letter]
+        temp.endOfWord = True
+
+    def search(self, word: str) -> bool:
+        def searchWithDot(word, head):
+            if word == '':
+                return head.endOfWord
+            temp = head 
+            for i in range(len(word)):
+                letter = word[i]
+                if letter == '.':
+                    for letter in temp.lettersDict:
+                        if searchWithDot(word[i+1:], temp.lettersDict[letter]):
+                            return True
+                if letter not in temp.lettersDict:
+                    return False  
+                temp = temp.lettersDict[letter]
+            return temp.endOfWord
+        return searchWithDot(word, self.head)
+        
+# Your WordDictionary object will be instantiated and called as such:
+# obj = WordDictionary()
+# obj.addWord(word)
+# param_2 = obj.search(word)
