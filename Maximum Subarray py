@@ -1,12 +1,70 @@
+# The idea is very simple:
+# We will calulcate the sum till now ie currentSum, currentSum is the sum calculated
+# so far, now we have a new number num. If adding the current Sum and num gives us
+# bigger number than num, then that means that it is a better choice(greedy) to 
+# add num to current sum, but if the adding current sum with num does not improve num
+# ie currentSum + num < num then that means it is better to take the num independently
+# since adding current sum to it is only decreasing it.
+
 class Solution:
     def maxSubArray(self, nums: List[int]) -> int:
-        max_sum = -math.inf
-        sum = 0
-        j = 0
-        for i in range(len(nums)):
-            sum += nums[i]
-            max_sum = sum if sum > max_sum else max_sum 
-            if sum < 0:
-                sum = 0  
-              
-        return max_sum    
+        globalMaxSum, currentSum = nums[0], 0
+        
+        for num in nums:
+            if currentSum + num > num:
+                currentSum = currentSum + num
+            else:
+                currentSum = num
+            globalMaxSum = max(globalMaxSum, currentSum)
+            
+        return globalMaxSum
+    
+    
+##################################################################################################
+#Or we keep on calculating the sum and at any point if the sum goes less than 0
+#then we will make it zero. Because once it is zero then we should not continue with this currentSum. 
+#We keep a global variable to find the largest subarray. 
+
+class Solution:
+    def maxSubArray(self, nums: List[int]) -> int:
+        currentMax = 0
+        globalMax = -inf
+        
+        
+        for n in nums:
+            currentMax += n
+            globalMax = max(globalMax, currentMax)
+            if currentMax < 0:
+                currentMax = 0
+                
+        return globalMax
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
