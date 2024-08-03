@@ -1,0 +1,10 @@
+class Solution:
+    def canBeEqual(self, target: List[int], arr: List[int]) -> bool:
+        counter1 = Counter(arr)
+        
+        for num in target:
+            if num not in counter1 or counter1[num] == 0:
+                return False
+            counter1[num] -= 1
+        
+        return True
