@@ -1,0 +1,83 @@
+Python:
+class Solution:
+    def moveZeroes(self, nums: List[int]) -> None:
+        i, j, zeroCount = 0, 0, 0
+        
+        while j < len(nums):
+            if nums[j] != 0:
+                nums[i] = nums[j]
+                i += 1
+            else:
+                zeroCount += 1
+            j += 1
+        
+        x = len(nums)-1
+        while zeroCount > 0:
+            nums[x] = 0
+            x -= 1
+            zeroCount -= 1
+
+##################################################
+
+class Solution:
+    def moveZeroes(self, nums: List[int]) -> None:
+        i, j, zeroCount = 0, 0, 0
+        
+        while j < len(nums):
+            if nums[j] != 0:
+                nums[i] = nums[j]
+                i += 1
+            j += 1
+        
+        while i < len(nums):
+            nums[i] = 0
+            i += 1
+
+JavaScript:
+/**
+ * @param {number[]} nums
+ * @return {void} Do not return anything, modify nums in-place instead.
+ */
+var moveZeroes = function(nums) {    
+    let i = 0
+    let j = 0
+    let zeroCount = 0
+    
+    while(j < nums.length){
+        if(nums[j] !== 0){
+            nums[i] = nums[j]
+            i++
+            j++
+        }
+        else{
+            zeroCount++
+            j++
+        }
+    }
+    
+    for(let x = nums.length-1; zeroCount > 0; x--){
+        nums[x] = 0
+        zeroCount--
+    }
+};
+
+////////////////////////////////////////////////////////
+
+var moveZeroes = function(nums) {    
+    let i = 0
+    let j = 0
+    
+    while(j < nums.length){
+        if(nums[j] !== 0){
+            nums[i] = nums[j]
+            i++
+        }
+        j++
+    }
+    
+    while(i<nums.length){
+        nums[i] = 0
+        i++
+    }
+    
+};
