@@ -1,0 +1,18 @@
+class Solution:
+    def findMaxLength(self, nums: List[int]) -> int:
+        memo = {0: -1}
+        count = 0
+        maxArr = 0
+        
+        for i in range(len(nums)):
+            if nums[i] == 1:
+                count += 1
+            else:
+                count -= 1
+            
+            if count in memo:
+                maxArr = max(maxArr, i-memo[count])
+            else:
+                memo[count] = i
+        
+        return maxArr
