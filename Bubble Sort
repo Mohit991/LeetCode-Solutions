@@ -1,0 +1,17 @@
+#Bubble Sort
+class Solution:
+    def checkEquality(self, x, y):
+        return True if x+y > y+x else False
+
+    def largestNumber(self, nums: List[int]) -> str:
+        stringNums = []
+        for n in nums:
+            stringNums.append(str(n))
+            
+        for i in range(len(stringNums)):
+            for j in range(len(stringNums)-1, i-1, -1):
+                if self.checkEquality(stringNums[j], stringNums[j-1]):
+                    stringNums[j], stringNums[j-1] = stringNums[j-1], stringNums[j]
+        
+        res = ''.join(stringNums)
+        return "0" if int(res) == 0 else res
