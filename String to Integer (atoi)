@@ -1,0 +1,48 @@
+class Solution:
+    def myAtoi(self, s: str) -> int:
+        i = 0
+        while i < len(s) and s[i] == ' ':
+            i += 1
+        
+        if i == len(s):
+            return 0
+
+        if s[i] not in ('+-0123456789'):
+            return 0
+        
+        sign = True # True means plus
+        if s[i] in '+-':
+            if s[i] == '+':
+                sign = True
+            else:
+                sign = False # False means minus
+            i += 1
+
+        while i < len(s) and s[i] == '0':
+            i += 1
+
+        if i == len(s):
+            return 0
+        
+        newString = ''
+        while i < len(s):
+            if s[i] in ('0123456789'):
+                newString += s[i]
+            else:
+                break
+            i += 1
+
+        if not newString:
+            return 0
+
+        num = int(newString) 
+        if sign:
+            if num > (2**31) - 1:
+                return (2**31) - 1
+            else:
+                return num
+        else:
+            if num > 2**31:
+                return -(2**31)
+            else:
+                return -num
