@@ -1,0 +1,22 @@
+class Solution:
+    def asteroidCollision(self, asteroids: List[int]) -> List[int]:
+        stack = []
+
+        for currentAsteroid in asteroids:
+            #collision will heppen
+            #last asteroid(stack[-1]) is moving towards left 
+            #currentAsteroid is moving towords the right
+            while stack and stack[-1] > 0 and currentAsteroid < 0 and stack[-1] > 0: 
+                #Magnitude of currentAsteroid is greater, hence, last asteroid(stack[-1]) will be destroyed
+                if -currentAsteroid > stack[-1]:
+                    stack.pop()
+                    continue
+                #Magnitude of currentAsteroid matches the magnitude of last asteroid(stack[-1])
+                #Hence, both will be destroyed
+                elif -currentAsteroid == stack[-1]:
+                    stack.pop()
+                break
+            else:
+                stack.append(currentAsteroid)
+
+        return stack
